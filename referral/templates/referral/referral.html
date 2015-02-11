@@ -1,0 +1,159 @@
+{% extends 'referral/base.html' %}
+{% load forms %}
+{% block panel_body %}
+<div class="row">
+  <div class="col-md-6">
+    <p class="lead" ng-hide="state == 'success'">
+      1. <b>who</b> are you referring to [[ route.name ]] ?
+    </p>
+    <p class="lead" ng-show="state == 'success'">
+      <i class="fa fa-check"></i> Referred [[ patient.demographics[0].name]] to 
+      <a href="[[ route.success_link ]]"> [[ route.name ]]</a>.
+    </p>
+
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>
+          <i class="fa fa-user"></i>
+          Patient Details
+        </h3>
+      </div>
+      <div class="panel-body">
+        
+        <!-- Initial state - enter hospital numbe -->
+        <div class="row" ng-show="state == 'initial'">         
+          <div class="col-sm-8">
+            <h4>Hospital number</h4>
+            <input autofocus class="form-control" type="text"
+                   ng-model="hospital_number"
+                   ng-keypress="$event.keyCode == 13 && lookup_hospital_number()"
+                   />
+            <br />
+            <p>
+              If we already have your patient on the system, we can pull their
+              details for you
+            </p>
+            <button class="btn btn-lg btn-primary" ng-click="lookup_hospital_number()">
+              <i class="fa fa-search"></i>
+              Find your patient
+            </button>
+          </div>
+        </div>
+
+        <!-- Editing demographics state -->
+        <div class="row" ng-show="state == 'editing_demographics'">
+          <div class="row">
+            <div class="col-md-12">
+              <form class="form-horizontal">
+                
+	        <div class="form-group">
+	          <label class="control-label col-sm-3">Hospital</label>
+                  <label class="control-label col-sm-8 text-left">
+                    [[ hospital_number ]]
+                  </label>
+	        </div>
+                
+                {% input "autofocus" label="Name" model="patient.demographics[0].name" %}
+	        <div class="form-group">
+	          <label class="control-label col-sm-3">Date of birth</label>
+	          <div class="col-sm-8">
+	            <input class="form-control"
+                           type="text"
+                           name="date_of_birth"
+		           ng-model="patient.demographics[0].date_of_birth"
+		           ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/(\d{4})$/"
+		           placeholder="dd/mm/yyyy" />
+                    <span class="help-block" ng-show="newEpisodeForm.date_of_birth.$invalid">
+                      Date of Birth must be dd/mm/yyyy
+                    </span>
+	          </div>
+	        </div>
+                {% select label="Gender" model="patient.demographics[0].gender" lookuplist="gender_list" %}
+              </form>             
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+              <button class="btn btn-secondary pull-left" 
+                      ng-click="back()" tabindex="-1">
+                <i class="fa fa-arrow-left"></i>
+                Back
+              </button>
+              <button class="btn btn-primary pull-right" 
+                      ng-click="refer()">
+                <i class="fa fa-arrow-right"></i>
+                Refer to [[ route.name ]]
+              </button>
+
+            </div> 
+
+          </diV>
+        </div>
+
+        
+
+        <!-- Has demographics state -->
+        <div class="row" ng-show="state == 'has_demographics' || state == 'success'">
+          <div class="col-sm-8">
+            <div class="row">
+              <div class="col-md-4">
+                <b>Hospital #</b>
+              </div>
+              <div class="col-md-8">
+                [[ patient.demographics[0].hospital_number ]]
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <b>Name</b>
+              </div>
+              <div class="col-md-8">
+                [[ patient.demographics[0].name ]]
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <b>Date of Birth</b>
+              </div>
+              <div class="col-md-8">
+                [[ patient.demographics[0].date_of_birth | shortDate ]]
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <b>Gender</b>
+              </div>
+              <div class="col-md-8">
+                [[ patient.demographics[0].gender ]]
+              </div>
+            </div>
+            <br />
+            <p>
+              [[ post_patient_text ]]
+            </p>
+          </div>
+          <div class="col-sm-12" ng-hide="state == 'success'">
+            <p>
+              <!-- <button class="btn btn-lg btn-secondary" ng-click="edit_demographics()"> -->
+              <!--   <i class="fa fa-edit"></i> -->
+              <!--   Change details -->
+              <!-- </button> -->
+              <button class="btn btn-lg btn-primary pull-right" 
+                      ng-click="refer()">
+                <i class="fa fa-arrow-right"></i>
+                Refer to [[ route.name ]]
+              </button>
+            </p>
+          </div>
+        </div>
+
+        
+
+      </div>
+    </div>          
+  </div>
+</div>
+{% endblock %}
+

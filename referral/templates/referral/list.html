@@ -1,41 +1,34 @@
-<div class="container content-offset">
-  <div class="panel panel-primary">
-    <!-- Default panel contents -->
-    <div class="panel-heading">
-      <h2>Referral Portal</h2>
-    </div>
-
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-md-6">
-          <p class="lead">
-            <b>Where</b> would you like to refer your patient?
-          </p>
-        </div>
-      </div>
-      <div class="row">
-        {% for referral in referral_routes %}
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3>{{ referral.name }}</h3>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <p>{{ referral.description }}</p>
-                </div>
-                <div class="col-md-6">
-                  <a href="#/{{ referral.slug }}" class="btn btn-primary ">
-                    <i class="fa fa-arrow-right"></i>
-                    Make Referral
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>          
-        </div>
-        {% endfor %}
-      </div>
-    </div>
+{% extends 'referral/base.html' %}
+{% block panel_body %}
+<div class="row">
+  <div class="col-md-6">
+    <p class="lead">
+      <b>Where</b> would you like to refer your patient?
+    </p>
   </div>
+</div>
+<div class="row">
+  {% for referral in referral_routes %}
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>{{ referral.name }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p>{{ referral.description }}</p>
+          </div>
+          <div class="col-md-6">
+            <a href="#/{{ referral.slug }}" class="btn btn-primary ">
+              <i class="fa fa-arrow-right"></i>
+              Make Referral
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>          
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

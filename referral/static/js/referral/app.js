@@ -45,4 +45,15 @@ app.config(function($routeProvider){
             resolve: {},
             templateUrl: '/referral/templates/list.html'
         })
+        .when('/:route', {
+            controller: 'ReferralCtrl',
+            resolve: {
+                referral_route: function(referralLoader){ return referralLoader() },
+		options: function(Options) { return Options; },
+                
+            },
+            templateUrl: function(params){
+                return '/referral/templates/referral.html'
+            }
+        })
 })
