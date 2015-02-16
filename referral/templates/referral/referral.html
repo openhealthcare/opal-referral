@@ -1,6 +1,7 @@
 {% extends 'referral/base.html' %}
 {% load forms %}
 {% block panel_body %}
+
 <div class="row">
   <div class="col-md-6">
     <p class="lead" ng-hide="state == 'success'">
@@ -102,7 +103,7 @@
                 <b>Hospital #</b>
               </div>
               <div class="col-md-8">
-                [[ patient.demographics[0].hospital_number ]]
+                [[ hospital_number ]]
               </div>
             </div>
             <div class="row">
