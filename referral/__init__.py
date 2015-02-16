@@ -56,6 +56,8 @@ class ReferralRoute(object):
     name         = 'Please name me Larry!'
     description  = 'Please describe me Larry!'
     target_teams = []
+    target_category = None
+    success_link = None
 
     @classmethod
     def get(klass, name):
