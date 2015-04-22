@@ -4,7 +4,7 @@ Views for the OPAL referral portal plugin
 from django.views.generic import View, TemplateView
 
 from opal.models import Patient
-from opal.utils.views import LoginRequiredMixin, _build_json_response, _get_request_data
+from opal.core.views import LoginRequiredMixin, _build_json_response, _get_request_data
 
 class ReferralIndexView(LoginRequiredMixin, TemplateView):
     """
