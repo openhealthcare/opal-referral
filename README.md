@@ -13,6 +13,8 @@ In order to define a referral route, we subclass `referral.routes.ReferralRoute`
         target_category = ['testing']
         success_link    = '/awesome/fun/times/'
 
+        def post_create(self, episode): pass
+
 ### ReferralRoute.name
 
 The name of your referral route.
@@ -33,3 +35,10 @@ whatever your `OpalApplication.default_episode_category` is set to.
 ### ReferralRoute.success_link
 
 Where should users be directed after successfully referring a patient ? 
+
+### ReferralRoute.post_create 
+
+A hook function that will be called after your new episode is created.
+
+Use this to manipulate your newly created episode before it is serialised and returned to the
+referring user.

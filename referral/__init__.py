@@ -3,6 +3,7 @@ Plugin definition
 """
 from opal.core.plugins import OpalPlugin
 
+from referral import api
 from referral.urls import urlpatterns
 from referral.routes import ReferralRoute
 
@@ -26,5 +27,4 @@ class ReferralPortalPlugin(OpalPlugin):
             href='/referrals/', display='Referrals', icon='fa fa-mail-forward',
             activepattern='/referrals')         
     ]
-
-
+    apis = api.viewsets()

@@ -3,7 +3,7 @@ Establishing referral routes
 """
 from django.conf import settings
 
-xfrom opal.utils import stringport, camelcase_to_underscore
+from opal.utils import stringport, camelcase_to_underscore
 
 # So we only do it once
 IMPORTED_FROM_APPS = False
