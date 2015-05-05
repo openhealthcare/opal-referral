@@ -43,7 +43,7 @@ module.exports = function(config){
 
             __dirname+'/../referral/static/js/referral/*.js',
             __dirname+'/../referral/static/js/referral/controllers/*.js',
-            __dirname+'../referral/static/js/test/*.js',
+            __dirname+'/../referral/static/js/test/*.js',
             
         ],
 
