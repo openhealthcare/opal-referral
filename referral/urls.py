@@ -8,9 +8,6 @@ from referral import views
 urlpatterns = patterns(
     '',
     url('^referrals/$', views.ReferralIndexView.as_view()),
-    
-    url('^referral/(?P<name>[a-z_]+)$', views.ReferralView.as_view()),
-    
     url(r'^referral/templates/(?P<name>[a-z_]+.html)$',
         views.ReferralTemplateView.as_view()),
 )
