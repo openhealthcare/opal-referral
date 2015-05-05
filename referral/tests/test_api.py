@@ -7,7 +7,7 @@ import time
 from django.test import RequestFactory
 from opal.core.test import OpalTestCase
 from opal.models import Patient, Episode, Team
-from mock import MagicMock
+from mock import MagicMock, patch
 
 from referral import api
 from referral.routes import ReferralRoute
@@ -19,6 +19,8 @@ class TestRoute(ReferralRoute):
     target_category = 'testing'
     success_link    = '/awesome/fun/times/'
 
+    def post_create(self, episode):
+        return
 
 class ReferralViewTestCase(OpalTestCase):
     def setUp(self):
@@ -96,12 +98,12 @@ class ReferralViewTestCase(OpalTestCase):
         self.assertEqual(['test'], episode.get_tag_names(None))
         
     def test_refer_calls_post_create(self):
-        pass
-        # mock_request = MagicMock(name='Mock request')
-        # mock_request.data = {
-        #     'hospital_number': self.demographics.hospital_number
-        #     }
-        # self.assertEqual(1, self.patient.episode_set.count())
-        # response = self.viewset().create(mock_request)
-        # self.assertEqual(201, response.status_code)
-        # self.assertEqual(2, self.patient.episode_set.count())
+        mock_request = MagicMock(name='Mock request')
+        mock_request.data = {
+            'hospital_number': self.demographics.hospital_number
+            }
+        with patch.object(TestRoute, 'post_create') as mock_create:
+            response = self.viewset().create(mock_request)
+            episode = self.patient.episode_set.get(category='testing')
+            mock_create.assert_called_with(episode)
+        

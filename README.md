@@ -36,12 +36,19 @@ whatever your `OpalApplication.default_episode_category` is set to.
 
 Where should users be directed after successfully referring a patient ? 
 
-### ReferralRoute.post_create 
+### ReferralRoute.post_create
 
 A hook function that will be called after your new episode is created.
 
-Use this to manipulate your newly created episode before it is serialised and returned to the
-referring user.
+Use this to manipulate your newly created episode.
+
+For example, one might want to automatically enter stub TODO entries for a particular
+referral route.
+
+    class TestRoute(ReferralRoute):
+        def post_create(self, episode):
+            # Do whatever you like to episode
+            return
 
 ## Integrations 
 

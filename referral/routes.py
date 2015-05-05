@@ -69,3 +69,10 @@ class ReferralRoute(object):
             description=klass.description,
             slug=klass.slug(),
             success_link=klass.success_link        )
+
+    def post_create(self, episode):
+        """
+        Subclasses should override this method to manipulate an episode
+        immediately after it has been created.
+        """
+        return
