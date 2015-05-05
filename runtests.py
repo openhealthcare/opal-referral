@@ -25,6 +25,7 @@ settings.configure(DEBUG=True,
                                    'django.contrib.staticfiles',
                                    'django.contrib.admin',
                                    'opal',
+                                   'opal.tests',
                                    'referral',))
 
 

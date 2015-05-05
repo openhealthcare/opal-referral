@@ -2,10 +2,12 @@
 Unittests for referral.views
 """
 import json
+import time
 
 from django.test import RequestFactory
 from opal.core.test import OpalTestCase
 from opal.models import Patient, Episode
+from mock import MagicMock
 
 from referral import api
 from referral.routes import ReferralRoute
@@ -27,6 +29,9 @@ class ReferralViewTestCase(OpalTestCase):
         self.request = RequestFactory().post('/referral/refer')
         self.patient = Patient.objects.create()
         self.episode = Episode.objects.create(patient=self.patient)
+        self.demographics = self.patient.demographics_set.get()
+        self.demographics.hospital_number = str(time.time())
+        self.demographics.save()
         
     def test_retrieve_gets_route(self):
         route = self.viewset().list(None)
@@ -39,7 +44,14 @@ class ReferralViewTestCase(OpalTestCase):
         self.assertEqual(expected, route.data)
 
     def test_refer_creates_new_episode(self):
-        pass
+        mock_request = MagicMock(name='Mock request')
+        mock_request.data = {
+            'hospital_number': self.demographics.hospital_number
+            }
+        self.assertEqual(1, self.patient.episode_set.count())
+        response = self.viewset().create(mock_request)
+        self.assertEqual(201, response.status_code)
+        self.assertEqual(2, self.patient.episode_set.count())
 
     def test_refer_creates_new_patient(self):
         pass
