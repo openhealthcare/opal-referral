@@ -45,15 +45,3 @@ def viewsets():
 
         apis.append(('referral/'+route.slug(), RouteAPI))
     return apis
-
-
-
-"""
-            demographics.update_from_dict(data['demographics'], self.request.user)
-
-        episode = patient.create_episode()
-        if self.referral.target_category:
-            episode.category = self.referral.target_category
-            episode.save()
-        episode.set_tag_names(self.referral.target_teams, self.request.user)
-"""
