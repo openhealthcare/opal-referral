@@ -6,7 +6,8 @@ install:
   - npm install karma karma-coverage karma-jasmine@0.1.5 karma-firefox-launcher
   - gem install rake
 before_script:
-  - sh ls -l $PWD 
+  - sh ls -l $PWD
+  - sh echo $PWD
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 script:
