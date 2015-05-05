@@ -47,3 +47,5 @@ referring user.
 
 [![Build
 Status](https://travis-ci.org/openhealthcare/opal-referral.png?branch=master)](https://travis-ci.org/openhealthcare/elcid)
+
+[![Code Health](https://landscape.io/github/openhealthcare/opal-referral/master/landscape.svg?style=flat)](https://landscape.io/github/openhealthcare/opal-referral/master)
