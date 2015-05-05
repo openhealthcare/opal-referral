@@ -46,4 +46,4 @@ referring user.
 ## Integrations 
 
 [![Build
-Status](https://travis-ci.org/openhealthcare/opal-reverral.png?branch=master)](https://travis-ci.org/openhealthcare/elcid)
+Status](https://travis-ci.org/openhealthcare/opal-referral.png?branch=master)](https://travis-ci.org/openhealthcare/elcid)
