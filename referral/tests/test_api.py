@@ -6,7 +6,7 @@ import time
 
 from django.test import RequestFactory
 from opal.core.test import OpalTestCase
-from opal.models import Patient, Episode
+from opal.models import Patient, Episode, Team
 from mock import MagicMock
 
 from referral import api
@@ -16,12 +16,13 @@ class TestRoute(ReferralRoute):
     name            = 'View Test Route'
     description     = 'This is a Route we use for unittests'
     target_teams    = ['test']
-    target_category = ['testing']
+    target_category = 'testing'
     success_link    = '/awesome/fun/times/'
 
 
 class ReferralViewTestCase(OpalTestCase):
     def setUp(self):
+        self.test_team = Team.objects.get_or_create(name='test')
         for name, viewset in api.viewsets():
             if viewset.referral == TestRoute:
                 self.viewset = viewset
@@ -54,16 +55,53 @@ class ReferralViewTestCase(OpalTestCase):
         self.assertEqual(2, self.patient.episode_set.count())
 
     def test_refer_creates_new_patient(self):
-        pass
+        mock_request = MagicMock(name='Mock request')
+        new_number = 'n' + str(time.time())
+        mock_request.data = {
+            'hospital_number': new_number
+            }
+        self.assertEqual(0, Patient.objects.filter(demographics__hospital_number=new_number).count())
+        response = self.viewset().create(mock_request)
+        self.assertEqual(201, response.status_code)
+        self.assertEqual(1, Patient.objects.filter(demographics__hospital_number=new_number).count())
 
     def test_refer_updates_demographics(self):
-        pass
+        mock_request = MagicMock(name='Mock request')
+        mock_request.data = {
+            'hospital_number': self.demographics.hospital_number,
+            'demographics'   : {
+                'name': 'Test Patient'
+            }
+        }
+        self.assertEqual(None, self.patient.demographics_set.get().name)
+        response = self.viewset().create(mock_request)
+        self.assertEqual('Test Patient', self.patient.demographics_set.get().name)
 
     def test_refer_creates_correct_episode_category(self):
-        pass
+        mock_request = MagicMock(name='Mock request')
+        mock_request.data = {
+            'hospital_number': self.demographics.hospital_number
+            }
+        self.assertEqual(0, self.patient.episode_set.filter(category='testing').count())
+        response = self.viewset().create(mock_request)
+        self.assertEqual(1, self.patient.episode_set.filter(category='testing').count())
 
     def test_refer_sets_tag_names(self):
-        pass
+        mock_request = MagicMock(name='Mock request')
+        mock_request.data = {
+            'hospital_number': self.demographics.hospital_number
+            }
+        response = self.viewset().create(mock_request)
+        episode = self.patient.episode_set.get(category='testing')
+        self.assertEqual(['test'], episode.get_tag_names(None))
         
     def test_refer_calls_post_create(self):
         pass
+        # mock_request = MagicMock(name='Mock request')
+        # mock_request.data = {
+        #     'hospital_number': self.demographics.hospital_number
+        #     }
+        # self.assertEqual(1, self.patient.episode_set.count())
+        # response = self.viewset().create(mock_request)
+        # self.assertEqual(201, response.status_code)
+        # self.assertEqual(2, self.patient.episode_set.count())
