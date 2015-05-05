@@ -40,9 +40,10 @@ module.exports = function(config){
             'opal/services/flow.js',
             'opal/controllers_module.js',
             'opal/controllers/*.js',
-            '/home/travis/openhealthcare/opal-referral/referral/static/js/referral/*.js',
-            '/home/travis/openhealthcare/opal-referral/referral/static/js/referral/controllers/*.js',
-            '/home/travis/openhealthcare/opal-referral/referral/static/js/test/*.js',
+
+            __dirname+'/../referral/static/js/referral/*.js',
+            __dirname+'/../referral/static/js/referral/controllers/*.js',
+            __dirname+'../referral/static/js/test/*.js',
             
         ],
 
