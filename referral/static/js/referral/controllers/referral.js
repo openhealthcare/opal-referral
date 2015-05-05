@@ -55,7 +55,7 @@ angular.module('opal.referral.controllers').controller(
             if(demographics.date_of_birth){
                 demographics.date_of_birth = moment(demographics.date_of_birth, 'DD/MM/YYYY').format('YYYY-MM-DD')
             }
-            $http.post('/api/v0.1/referral/' + $scope.route.slug,
+            $http.post('/api/v0.1/referral/' + $scope.route.slug + '/',
                        {
                            hospital_number: $scope.hospital_number, 
                            demographics   : demographics
