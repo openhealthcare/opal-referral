@@ -1,6 +1,8 @@
 """
 API for the OPAL referral portal.
 """
+from opal.models import Patient
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
@@ -9,6 +11,14 @@ class ReferralViewSet(ViewSet):
     def list(self, request):
         return Response(self.referral.to_dict())
 
+    def create(self, request):
+        hospital_number = request.data['hospital_number']
+        patient, created = Patient.objects.get_or_create(
+            demographics__hospital_number=hospital_number
+        )
+        episode = patient.create_episode()
+        return Response({'success': 'YAY'}, status.HTTP_201_CREATED)
+    
 def viewsets():
     """
     Return our api viewsets
