@@ -1,7 +1,6 @@
 """
 Standalone test runner for wardrounds plugin
 """
-import os
 import sys
 from opal.core import application
 
