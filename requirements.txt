@@ -1,0 +1,4 @@
+Django==1.6.11
+South==0.8.1
+-e git://github.com/openhealthcare/opal.git@master#egg=opal
+mock
