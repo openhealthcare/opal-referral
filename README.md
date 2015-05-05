@@ -42,3 +42,8 @@ A hook function that will be called after your new episode is created.
 
 Use this to manipulate your newly created episode before it is serialised and returned to the
 referring user.
+
+## Integrations 
+
+[![Build
+Status](https://travis-ci.org/openhealthcare/opal-reverral.svg?branch=master)](https://travis-ci.org/openhealthcare/elcid)
