@@ -1,13 +1,13 @@
 """
 Plugin definition
 """
-from opal.core.plugins import OpalPlugin
+from opal.core import plugins
 
 from referral import api
 from referral.urls import urlpatterns
 from referral.routes import ReferralRoute
 
-class ReferralPortalPlugin(OpalPlugin):
+class ReferralPortalPlugin(plugins.OpalPlugin):
     """
     Main entrypoint to expose this plugin to the host
     OPAL instance.
@@ -28,3 +28,5 @@ class ReferralPortalPlugin(OpalPlugin):
             activepattern='/referrals')         
     ]
     apis = api.viewsets()
+
+plugins.register(ReferralPortalPlugin)
