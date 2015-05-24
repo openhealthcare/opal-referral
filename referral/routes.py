@@ -14,7 +14,6 @@ def import_from_apps():
     This way we allow our implementation, or plugins, to define their
     own ward rounds. 
     """
-    print "Importing from apps"
     for app in settings.INSTALLED_APPS:
         try:
             stringport(app + '.referrals')
