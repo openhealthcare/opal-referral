@@ -72,6 +72,8 @@ angular.module('opal.referral.controllers').controller(
         $scope.back = function(){
             $scope.state = 'initial';
             $scope.patient = null;
+            $scope.hospital_number = null;
+            $scope.post_patient_text = null;
         }
 
     });

@@ -135,17 +135,24 @@
               [[ post_patient_text ]]
             </p>
           </div>
-          <div class="col-sm-12" ng-hide="state == 'success'">
+          <div class="col-sm-12">
             <p>
               <!-- <button class="btn btn-lg btn-secondary" ng-click="edit_demographics()"> -->
               <!--   <i class="fa fa-edit"></i> -->
               <!--   Change details -->
               <!-- </button> -->
               <button class="btn btn-lg btn-primary pull-right" 
+                      ng-hide="state == 'success'"
                       ng-click="refer()">
                 <i class="fa fa-arrow-right"></i>
                 Refer to [[ route.name ]]
               </button>
+              <button class="btn btn-lg btn-primary pull-right" 
+                      ng-show="state == 'success'"
+                      ng-click="back()">
+                <i class="fa fa-arrow-right"></i>
+                Refer another
+              </button>              
             </p>
           </div>
         </div>
