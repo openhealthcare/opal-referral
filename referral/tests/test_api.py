@@ -19,7 +19,7 @@ class TestRoute(ReferralRoute):
     target_category = 'testing'
     success_link    = '/awesome/fun/times/'
 
-    def post_create(self, episode):
+    def post_create(self, episode, user):
         return
 
 class ReferralViewTestCase(OpalTestCase):
@@ -108,5 +108,5 @@ class ReferralViewTestCase(OpalTestCase):
         with patch.object(TestRoute, 'post_create') as mock_create:
             response = self.viewset().create(mock_request)
             episode = self.patient.episode_set.get(category='testing')
-            mock_create.assert_called_with(episode)
+            mock_create.assert_called_with(episode, mock_request.user)
         
