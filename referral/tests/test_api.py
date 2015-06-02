@@ -42,7 +42,10 @@ class ReferralViewTestCase(OpalTestCase):
             'name'        : 'View Test Route',
             'description' : 'This is a Route we use for unittests',
             'slug'        : 'view_test_route',
-            'success_link': '/awesome/fun/times/'
+            'success_link': '/awesome/fun/times/',
+            'verb'            : 'Refer',
+            'past_verb'       : 'Referred',
+            'progressive_verb': 'Referring'
         }
         self.assertEqual(expected, route.data)
 

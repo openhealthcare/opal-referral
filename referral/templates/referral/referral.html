@@ -5,10 +5,10 @@
 <div class="row">
   <div class="col-md-6">
     <p class="lead" ng-hide="state == 'success'">
-      1. <b>who</b> are you referring to [[ route.name ]] ?
+      1. <b>who</b> are you [[ route.progressive_verb.toLowerCase() ]] to [[ route.name ]] ?
     </p>
     <p class="lead" ng-show="state == 'success'">
-      <i class="fa fa-check"></i> Referred [[ patient.demographics[0].name]] to 
+      <i class="fa fa-check"></i> [[ route.past_verb ]] [[ patient.demographics[0].name]] to 
       <a href="[[ route.success_link ]]"> [[ route.name ]]</a>.
     </p>
 
@@ -85,7 +85,7 @@
               <button class="btn btn-primary pull-right" 
                       ng-click="refer()">
                 <i class="fa fa-arrow-right"></i>
-                Refer to [[ route.name ]]
+                [[ route.verb ]] to [[ route.name ]]
               </button>
 
             </div> 
@@ -145,13 +145,13 @@
                       ng-hide="state == 'success'"
                       ng-click="refer()">
                 <i class="fa fa-arrow-right"></i>
-                Refer to [[ route.name ]]
+                [[ route.verb ]] to [[ route.name ]]
               </button>
               <button class="btn btn-lg btn-primary pull-right" 
                       ng-show="state == 'success'"
                       ng-click="back()">
                 <i class="fa fa-arrow-right"></i>
-                Refer another
+                [[ route.verb ]] another
               </button>              
             </p>
           </div>

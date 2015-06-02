@@ -30,7 +30,7 @@ class ReferralViewSet(ViewSet):
             episode.save()
         episode.set_tag_names(self.referral.target_teams, request.user)
 
-        self.referral().post_create(episode)
+        self.referral().post_create(episode, request.user)
         return Response({'success': 'YAY'}, status.HTTP_201_CREATED)
     
 def viewsets():

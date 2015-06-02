@@ -32,6 +32,9 @@ class ReferralRoute(object):
     target_teams = []
     target_category = None
     success_link = None
+    verb = 'Refer'
+    progressive_verb = 'Referring'
+    past_verb = 'Referred'
 
     @classmethod
     def get(klass, name):
@@ -67,9 +70,13 @@ class ReferralRoute(object):
             name=klass.name,
             description=klass.description,
             slug=klass.slug(),
-            success_link=klass.success_link        )
+            success_link=klass.success_link,
+            verb=klass.verb,
+            progressive_verb=klass.progressive_verb,
+            past_verb=klass.past_verb
+        )
 
-    def post_create(self, episode):
+    def post_create(self, episode, user):
         """
         Subclasses should override this method to manipulate an episode
         immediately after it has been created.

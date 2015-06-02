@@ -50,6 +50,32 @@ referral route.
             # Do whatever you like to episode
             return
 
+### verb
+
+The verb for the thing this route is doing.
+
+Default = 'Refer'
+
+### progressive_verb
+
+The progressive form of the verb this route is doing
+
+Default = 'referring'
+
+### past_verb
+
+The past form of the verb this route is doing
+
+Default = 'referred'
+
+## Settings
+
+### REFERRAL_MENU_ITEM
+
+Display a menu Item? 
+
+Defaut = True
+
 ## Integrations 
 
 [![Build
