@@ -23,6 +23,12 @@ The name of your referral route.
 
 The description of your referral route
 
+### ReferralRoute.page_title
+
+The title to display in the page banner for your route.
+
+Defaults to 'Referral Portal'
+
 ### ReferralRoute.target_teams
 
 The names of the teams to which this route referrs patients.
@@ -50,19 +56,19 @@ referral route.
             # Do whatever you like to episode
             return
 
-### verb
+### ReferralRoute.verb
 
 The verb for the thing this route is doing.
 
 Default = 'Refer'
 
-### progressive_verb
+### ReferralRoute.progressive_verb
 
 The progressive form of the verb this route is doing
 
 Default = 'referring'
 
-### past_verb
+### ReferralRoute.past_verb
 
 The past form of the verb this route is doing
 

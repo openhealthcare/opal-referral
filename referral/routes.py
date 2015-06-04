@@ -32,6 +32,7 @@ class ReferralRoute(object):
     target_teams = []
     target_category = None
     success_link = None
+    page_title = None
     verb = 'Refer'
     progressive_verb = 'Referring'
     past_verb = 'Referred'
@@ -73,7 +74,8 @@ class ReferralRoute(object):
             success_link=klass.success_link,
             verb=klass.verb,
             progressive_verb=klass.progressive_verb,
-            past_verb=klass.past_verb
+            past_verb=klass.past_verb,
+            page_title=klass.page_title
         )
 
     def post_create(self, episode, user):
