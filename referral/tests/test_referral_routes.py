@@ -23,6 +23,7 @@ class ReferralRouteTestCase(OpalTestCase):
             'verb'            : 'Refer',
             'past_verb'       : 'Referred',
             'progressive_verb': 'Referring',
+            'page_title'      : None
         }
         self.assertEqual(expected, TestRoute.to_dict())
 

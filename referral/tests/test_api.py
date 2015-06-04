@@ -39,13 +39,15 @@ class ReferralViewTestCase(OpalTestCase):
     def test_retrieve_gets_route(self):
         route = self.viewset().list(None)
         expected = {
-            'name'        : 'View Test Route',
-            'description' : 'This is a Route we use for unittests',
-            'slug'        : 'view_test_route',
-            'success_link': '/awesome/fun/times/',
+            'name'            : 'View Test Route',
+            'description'     : 'This is a Route we use for unittests',
+            'slug'            : 'view_test_route',
+            'success_link'    : '/awesome/fun/times/',
             'verb'            : 'Refer',
             'past_verb'       : 'Referred',
-            'progressive_verb': 'Referring'
+            'progressive_verb': 'Referring',
+            'page_title'      : None
+
         }
         self.assertEqual(expected, route.data)
 
