@@ -23,6 +23,17 @@ settings.configure(DEBUG=True,
                        'django.contrib.staticfiles.finders.FileSystemFinder',
                        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
                        'compressor.finders.CompressorFinder',),
+                   MIDDLEWARE_CLASSES = (
+                       'django.middleware.common.CommonMiddleware',
+                       'django.contrib.sessions.middleware.SessionMiddleware',
+                       'opal.middleware.AngularCSRFRename',
+                       'django.middleware.csrf.CsrfViewMiddleware',
+                       'django.contrib.auth.middleware.AuthenticationMiddleware',
+                       'django.contrib.messages.middleware.MessageMiddleware',
+                       'opal.middleware.DjangoReversionWorkaround',
+                       'reversion.middleware.RevisionMiddleware',
+                       'axes.middleware.FailedLoginMiddleware',
+                   ),
                    INSTALLED_APPS=('django.contrib.auth',
                                    'django.contrib.contenttypes',
                                    'django.contrib.sessions',
@@ -33,6 +44,8 @@ settings.configure(DEBUG=True,
                                    'opal.tests',
                                    'referral',))
 
+import django
+django.setup()
 
 from django.test.runner import DiscoverRunner
 test_runner = DiscoverRunner(verbosity=1)
