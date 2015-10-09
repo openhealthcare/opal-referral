@@ -3,9 +3,9 @@
 {% block panel_body %}
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 col-md-offset-3">
     <p class="lead" ng-hide="state == 'success'">
-      1. <b>who</b> are you [[ route.progressive_verb.toLowerCase() ]] to [[ route.name ]] ?
+      1. <b>Who</b> are you [[ route.progressive_verb.toLowerCase() ]] to [[ route.name ]] ?
     </p>
     <p class="lead" ng-show="state == 'success'">
       <i class="fa fa-check"></i> [[ route.past_verb ]] [[ patient.demographics[0].name]] to 
@@ -15,7 +15,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3>
@@ -34,14 +34,15 @@
                    ng-keypress="$event.keyCode == 13 && lookup_hospital_number()"
                    />
             <br />
+            <button class="btn btn-lg btn-primary" ng-click="lookup_hospital_number()">
+              <i class="fa fa-search"></i>
+              Search
+            </button>
+            <br />
             <p>
               If we already have your patient on the system, we can pull their
               details for you
             </p>
-            <button class="btn btn-lg btn-primary" ng-click="lookup_hospital_number()">
-              <i class="fa fa-search"></i>
-              Find your patient
-            </button>
           </div>
         </div>
 
