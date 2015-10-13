@@ -9,7 +9,8 @@
     </p>
     <p class="lead" ng-show="state == 'success'">
       <i class="fa fa-check"></i> [[ route.past_verb ]] [[ patient.demographics[0].name]] to
-      <a href="[[ route.success_link ]]"> [[ route.name ]]</a>.
+      <a ng-show="route.success_link" href="[[ route.success_link ]]">[[ route.name ]]</a>.
+      <span ng-hide="route.success_link">[[ route.name ]]</a>.
     </p>
 
   </div>
