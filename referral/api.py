@@ -27,7 +27,8 @@ class ReferralViewSet(ViewSet):
                 request.data['demographics'], request.user
             )
 
-        if self.referral.create_new_episode:
+        # we should never, even accidentally have a patient without an episode
+        if self.referral.create_new_episode or not patient.episode_set.count():
             episode = patient.create_episode()
         else:
             episode = patient.episode_set.order_by("-created")
