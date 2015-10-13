@@ -18,9 +18,13 @@
   <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3>
+        <h3 ng-hide="currentAdditionalData()">
           <i class="fa fa-user"></i>
           Patient Details
+        </h3>
+        <h3 ng-show="currentAdditionalData()">
+          {% block additional_models_header %}
+          {% endblock %}
         </h3>
       </div>
       <div class="panel-body">
@@ -90,7 +94,7 @@
                   [[ route.verb ]] to [[ route.name ]]
                 </span>
                 <span ng-if="getNextStep()">
-                  [[ getNextStep()|title ]]
+                  [[ getNextStep().display_name ]]
                 </span>
               </button>
 
@@ -158,7 +162,7 @@
                   [[ route.verb ]] to [[ route.name ]]
                 </span>
                 <span ng-if="getNextStep()">
-                  [[ getNextStep()|title ]]
+                  [[ getNextStep().display_name ]]
                 </span>
               </button>
               <button class="btn btn-lg btn-primary pull-right"

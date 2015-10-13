@@ -4,9 +4,11 @@ Establishing referral routes
 from django.conf import settings
 
 from opal.utils import stringport, camelcase_to_underscore
+from opal.core.schemas import serialize_model
 
 # So we only do it once
 IMPORTED_FROM_APPS = False
+
 
 def import_from_apps():
     """
@@ -80,7 +82,7 @@ class ReferralRoute(object):
             past_verb=klass.past_verb,
             page_title=klass.page_title,
             additional_models=[
-                (m.__name__, m.build_field_schema()) for m in klass.additional_models
+                serialize_model(m) for m in klass.additional_models
             ]
         )
 

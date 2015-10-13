@@ -17,17 +17,13 @@ angular.module('opal.referral.controllers').controller(
 
         var cleanAdditionalModelData = function(){
             _.each(referral_route.additional_models, function(am){
-                var modelName = am[0];
-                var fieldSchema = am[1];
-                $scope.additionalModelsData[modelName] = new Item({}, undefined, {fields: fieldSchema});
+                $scope.additionalModelsData[am.name] = new Item({}, undefined, {fields: am.fields});
             });
         };
 
         cleanAdditionalModelData();
 
-        $scope.additionalModels = _.map(referral_route.additional_models, function(m){
-            return _.first(m);
-        });
+        $scope.additionalModels = referral_route.additional_models;
 
         //
         // Make our lookuplists available
@@ -73,11 +69,13 @@ angular.module('opal.referral.controllers').controller(
                 return null;
             }
 
-            if($scope.state == _.last($scope.additionalModels)){
+            if($scope.state == _.last($scope.additionalModels).name){
                 return null;
             }
 
-            currentIndex = $scope.additionalModels.indexOf($scope.state);
+            currentIndex = _.findIndex($scope.additionalModels, function(am){
+                return am.name == $scope.state;
+            })
 
             if(currentIndex === -1){
                 return $scope.additionalModels[0];
@@ -93,8 +91,14 @@ angular.module('opal.referral.controllers').controller(
                 $scope.refer();
             }
             else{
-                $scope.state = nextStep;
+                $scope.state = nextStep.name;
             }
+        }
+
+        $scope.currentAdditionalData = function(){
+            return _.find($scope.additionalModels, function(am){
+                return am.name === $scope.state ;
+            });
         }
 
         $scope.refer = function(){
