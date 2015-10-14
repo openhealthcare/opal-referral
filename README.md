@@ -40,7 +40,7 @@ whatever your `OpalApplication.default_episode_category` is set to.
 
 ### ReferralRoute.success_link
 
-Where should users be directed after successfully referring a patient ? 
+Where should users be directed after successfully referring a patient ?
 
 ### ReferralRoute.post_create
 
@@ -74,15 +74,28 @@ The past form of the verb this route is doing
 
 Default = 'referred'
 
+### Adding additional models
+
+Additional models can also be added to the referral app for creation upon referral.
+By default we only add a patient, if you'd like to add additional models add them
+as part of additional_models. Then add template that in {{ app }}/referral/{{ route.name }}
+this template should extend referral/referral.html.
+
+The additional models will be displayed after patient details, in the order they
+appear in routes. The template should show titles/forms when scope.state is pointing
+to the name of the label.
+
+ie, put in <span ng-show="scope.state=my_model">{{ the form for my model }}</span>
+
 ## Settings
 
 ### REFERRAL_MENU_ITEM
 
-Display a menu Item? 
+Display a menu Item?
 
 Defaut = True
 
-## Integrations 
+## Integrations
 
 [![Build
 Status](https://travis-ci.org/openhealthcare/opal-referral.png?branch=master)](https://travis-ci.org/openhealthcare/opal-referral)
