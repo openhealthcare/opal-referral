@@ -74,12 +74,19 @@ The past form of the verb this route is doing
 
 Default = 'referred'
 
-### Adding additional models
+## Adding additional models
 
 Additional models can also be added to the referral app for creation upon referral.
 By default we only add a patient, if you'd like to add additional models add them
 as part of additional_models. Then add template that in {{ app }}/referral/{{ route.name }}
 this template should extend referral/referral.html.
+
+    class TestRoute(ReferralRoute):
+        name            = 'Test Route'
+        additional_models = [
+            models.Diagnosis,
+            models.Treatments
+        ]
 
 The additional models will be displayed after patient details, in the order they
 appear in routes. The template should show titles/forms when scope.state is pointing
