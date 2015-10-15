@@ -92,7 +92,20 @@ The additional models will be displayed after patient details, in the order they
 appear in routes. The template should show titles/forms when scope.state is pointing
 to the name of the label.
 
-ie, put in <span ng-show="scope.state=my_model">{{ the form for my model }}</span>
+    {% block additional_models %}
+    <div ng-show="state=='diagnosis'"> 
+        <form class="form-horizontal">
+            {% input label="Condition" model="additionalModelsData.diagnosis.condition" lookuplist="condition_list" %}
+        </form>
+
+        <button class="btn btn-lg btn-primary pull-right" ng-click="nextStep()">
+            <i class="fa fa-arrow-right"></i>
+            <span ng-show="!getNextStep()">[[ route.verb ]] to [[ route.name ]]</span>
+            <span ng-show="getNextStep()">[[ getNextStep().display_name ]]</span>
+        </button>
+    </div>
+    ...
+    {% endblock %}
 
 ## Settings
 
