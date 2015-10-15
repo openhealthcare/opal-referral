@@ -40,7 +40,7 @@ whatever your `OpalApplication.default_episode_category` is set to.
 
 ### ReferralRoute.success_link
 
-Where should users be directed after successfully referring a patient ? 
+Where should users be directed after successfully referring a patient ?
 
 ### ReferralRoute.post_create
 
@@ -74,15 +74,48 @@ The past form of the verb this route is doing
 
 Default = 'referred'
 
+## Adding additional models
+
+Additional models can also be added to the referral app for creation upon referral.
+By default we only add a patient, if you'd like to add additional models add them
+as part of additional_models. Then add template that in {{ app }}/referral/{{ route.name }}
+this template should extend referral/referral.html.
+
+    class TestRoute(ReferralRoute):
+        name            = 'Test Route'
+        additional_models = [
+            models.Diagnosis,
+            models.Treatments
+        ]
+
+The additional models will be displayed after patient details, in the order they
+appear in routes. The template should show titles/forms when scope.state is pointing
+to the name of the label.
+
+    {% block additional_models %}
+    <div ng-show="state=='diagnosis'"> 
+        <form class="form-horizontal">
+            {% input label="Condition" model="additionalModelsData.diagnosis.condition" lookuplist="condition_list" %}
+        </form>
+
+        <button class="btn btn-lg btn-primary pull-right" ng-click="nextStep()">
+            <i class="fa fa-arrow-right"></i>
+            <span ng-show="!getNextStep()">[[ route.verb ]] to [[ route.name ]]</span>
+            <span ng-show="getNextStep()">[[ getNextStep().display_name ]]</span>
+        </button>
+    </div>
+    ...
+    {% endblock %}
+
 ## Settings
 
 ### REFERRAL_MENU_ITEM
 
-Display a menu Item? 
+Display a menu Item?
 
 Defaut = True
 
-## Integrations 
+## Integrations
 
 [![Build
 Status](https://travis-ci.org/openhealthcare/opal-referral.png?branch=master)](https://travis-ci.org/openhealthcare/opal-referral)
