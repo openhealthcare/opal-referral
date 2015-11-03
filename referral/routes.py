@@ -4,9 +4,11 @@ Establishing referral routes
 from django.conf import settings
 
 from opal.utils import stringport, camelcase_to_underscore
+from opal.core.schemas import serialize_model
 
 # So we only do it once
 IMPORTED_FROM_APPS = False
+
 
 def import_from_apps():
     """
@@ -23,6 +25,7 @@ def import_from_apps():
     IMPORTED_FROM_APPS = True
     return
 
+
 class ReferralRoute(object):
     """
     Base Referral Route class - individal referral routes should override this.
@@ -36,6 +39,8 @@ class ReferralRoute(object):
     verb = 'Refer'
     progressive_verb = 'Referring'
     past_verb = 'Referred'
+    create_new_episode = True
+    additional_models = []
 
     @classmethod
     def get(klass, name):
@@ -74,7 +79,10 @@ class ReferralRoute(object):
             verb=klass.verb,
             progressive_verb=klass.progressive_verb,
             past_verb=klass.past_verb,
-            page_title=klass.page_title
+            page_title=klass.page_title,
+            additional_models=[
+                serialize_model(m) for m in klass.additional_models
+            ]
         )
 
     def post_create(self, episode, user):

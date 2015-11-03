@@ -1,10 +1,10 @@
 """
 Views for the OPAL referral portal plugin
 """
-from django.views.generic import View, TemplateView
+from django.views.generic import TemplateView
 
-from opal.models import Patient
-from opal.core.views import LoginRequiredMixin, _build_json_response, _get_request_data
+from opal.core.views import LoginRequiredMixin
+
 
 class ReferralIndexView(LoginRequiredMixin, TemplateView):
     """
@@ -21,7 +21,7 @@ class ReferralTemplateView(TemplateView):
         return super(ReferralTemplateView, self).dispatch(*args, **kwargs)
 
     def get_template_names(self, *args, **kwargs):
-        return ['referral/'+self.name]
+        return ['referral/'+self.name, 'referral/referral.html']
 
     def get_context_data(self, *args, **kwargs):
         context = super(ReferralTemplateView, self).get_context_data(**kwargs)

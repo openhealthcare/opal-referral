@@ -33,11 +33,10 @@ app.config(function($routeProvider){
             controller: 'ReferralCtrl',
             resolve: {
                 referral_route: function(referralLoader){ return referralLoader() },
-		options: function(Options) { return Options; },
-                
+            		options: function(Options) { return Options; },
             },
             templateUrl: function(params){
-                return '/referral/templates/referral.html'
+                return '/referral/templates/' + params.route + '.html'
             }
         })
 })

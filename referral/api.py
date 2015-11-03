@@ -1,10 +1,11 @@
 """
 API for the OPAL referral portal.
 """
-from opal.models import Patient
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
+
+from opal.models import Patient
 
 class ReferralViewSet(ViewSet):
 
@@ -22,9 +23,24 @@ class ReferralViewSet(ViewSet):
             demographics.save()
 
         if 'demographics' in request.data:
-            demographics.update_from_dict(request.data['demographics'], request.user)
+            demographics.update_from_dict(
+                request.data['demographics'], request.user
+            )
 
-        episode = patient.create_episode()
+        # we should never, even accidentally have a patient without an episode
+        if self.referral.create_new_episode or not patient.episode_set.count():
+            episode = patient.create_episode()
+        else:
+            episode = patient.episode_set.order_by("-created")
+
+        for additional_model in self.referral.additional_models:
+            model_name = additional_model.__name__
+            if model_name in request.data:
+                new_model = additional_model()
+                data_dict = request.data[model_name]
+                data_dict["episode_id"] = episode.id
+                new_model.update_from_dict(data_dict, request.user)
+
         if self.referral.target_category:
             episode.category = self.referral.target_category
             episode.save()
@@ -34,6 +50,7 @@ class ReferralViewSet(ViewSet):
         success_link = referral.get_success_link(episode)
         self.referral().post_create(episode, request.user)
         return Response({'success_link': success_link}, status.HTTP_201_CREATED)
+
 
 def viewsets():
     """

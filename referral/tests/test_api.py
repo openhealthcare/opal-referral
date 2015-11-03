@@ -39,14 +39,15 @@ class ReferralViewTestCase(OpalTestCase):
     def test_retrieve_gets_route(self):
         route = self.viewset().list(None)
         expected = {
-            'name'            : 'View Test Route',
-            'description'     : 'This is a Route we use for unittests',
-            'slug'            : 'view_test_route',
-            'success_link'    : '/awesome/fun/times/',
-            'verb'            : 'Refer',
-            'past_verb'       : 'Referred',
+            'additional_models': [],
+            'name': 'View Test Route',
+            'description': 'This is a Route we use for unittests',
+            'slug': 'view_test_route',
+            'success_link': '/awesome/fun/times/',
+            'verb': 'Refer',
+            'past_verb': 'Referred',
             'progressive_verb': 'Referring',
-            'page_title'      : None
+            'page_title': None
 
         }
         self.assertEqual(expected, route.data)
@@ -55,7 +56,8 @@ class ReferralViewTestCase(OpalTestCase):
         mock_request = MagicMock(name='Mock request')
         mock_request.data = {
             'hospital_number': self.demographics.hospital_number
-            }
+        }
+        mock_request.user = self.user
         self.assertEqual(1, self.patient.episode_set.count())
         response = self.viewset().create(mock_request)
         self.assertEqual(201, response.status_code)
@@ -65,8 +67,9 @@ class ReferralViewTestCase(OpalTestCase):
         mock_request = MagicMock(name='Mock request')
         new_number = 'n' + str(time.time())
         mock_request.data = {
-            'hospital_number': new_number
+            'hospital_number': new_number,
             }
+        mock_request.user = self.user
         self.assertEqual(0, Patient.objects.filter(demographics__hospital_number=new_number).count())
         response = self.viewset().create(mock_request)
         self.assertEqual(201, response.status_code)
@@ -80,7 +83,8 @@ class ReferralViewTestCase(OpalTestCase):
                 'name': 'Test Patient'
             }
         }
-        self.assertEqual(None, self.patient.demographics_set.get().name)
+        mock_request.user = self.user
+        self.assertEqual('', self.patient.demographics_set.get().name)
         response = self.viewset().create(mock_request)
         self.assertEqual('Test Patient', self.patient.demographics_set.get().name)
 
@@ -88,7 +92,8 @@ class ReferralViewTestCase(OpalTestCase):
         mock_request = MagicMock(name='Mock request')
         mock_request.data = {
             'hospital_number': self.demographics.hospital_number
-            }
+        }
+        mock_request.user = self.user
         self.assertEqual(0, self.patient.episode_set.filter(category='testing').count())
         response = self.viewset().create(mock_request)
         self.assertEqual(1, self.patient.episode_set.filter(category='testing').count())
@@ -97,7 +102,8 @@ class ReferralViewTestCase(OpalTestCase):
         mock_request = MagicMock(name='Mock request')
         mock_request.data = {
             'hospital_number': self.demographics.hospital_number
-            }
+        }
+        mock_request.user = self.user
         response = self.viewset().create(mock_request)
         episode = self.patient.episode_set.get(category='testing')
         self.assertEqual(['test'], episode.get_tag_names(None))
@@ -106,7 +112,8 @@ class ReferralViewTestCase(OpalTestCase):
         mock_request = MagicMock(name='Mock request')
         mock_request.data = {
             'hospital_number': self.demographics.hospital_number
-            }
+        }
+        mock_request.user = self.user
         with patch.object(TestRoute, 'post_create') as mock_create:
             response = self.viewset().create(mock_request)
             episode = self.patient.episode_set.get(category='testing')
