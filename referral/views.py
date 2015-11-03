@@ -8,8 +8,8 @@ from opal.core.views import LoginRequiredMixin, _build_json_response, _get_reque
 
 class ReferralIndexView(LoginRequiredMixin, TemplateView):
     """
-    Main entrypoint into the referral portal service. 
-    
+    Main entrypoint into the referral portal service.
+
     Lists our referral routes.
     """
     template_name = 'referral/index.html'

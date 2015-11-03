@@ -29,20 +29,22 @@ class ReferralViewSet(ViewSet):
             episode.category = self.referral.target_category
             episode.save()
         episode.set_tag_names(self.referral.target_teams, request.user)
-
+        referral = self.referral()
+        referral.post_create(episode, request.user)
+        success_link = referral.get_success_link(episode)
         self.referral().post_create(episode, request.user)
-        return Response({'success': 'YAY'}, status.HTTP_201_CREATED)
-    
+        return Response({'success_link': success_link}, status.HTTP_201_CREATED)
+
 def viewsets():
     """
     Return our api viewsets
     """
     from referral import ReferralRoute
-    
+
     apis = []
     for route in ReferralRoute.list():
         class RouteAPI(ReferralViewSet):
-            referral  = route
+            referral = route
             base_name = 'referral/'+route.slug()
 
         apis.append(('referral/'+route.slug(), RouteAPI))

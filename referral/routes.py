@@ -12,7 +12,7 @@ def import_from_apps():
     """
     Iterate through installed apps attempting to import app.wardrounds
     This way we allow our implementation, or plugins, to define their
-    own ward rounds. 
+    own ward rounds.
     """
     for app in settings.INSTALLED_APPS:
         try:
@@ -44,7 +44,7 @@ class ReferralRoute(object):
         """
         if not IMPORTED_FROM_APPS:
             import_from_apps()
-            
+
         for sub in klass.__subclasses__():
             if sub.slug() == name:
                 return sub
@@ -71,7 +71,6 @@ class ReferralRoute(object):
             name=klass.name,
             description=klass.description,
             slug=klass.slug(),
-            success_link=klass.success_link,
             verb=klass.verb,
             progressive_verb=klass.progressive_verb,
             past_verb=klass.past_verb,
@@ -84,3 +83,6 @@ class ReferralRoute(object):
         immediately after it has been created.
         """
         return
+
+    def get_success_link(self, episode):
+        return self.success_link

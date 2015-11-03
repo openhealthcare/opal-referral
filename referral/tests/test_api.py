@@ -35,7 +35,7 @@ class ReferralViewTestCase(OpalTestCase):
         self.demographics = self.patient.demographics_set.get()
         self.demographics.hospital_number = str(time.time())
         self.demographics.save()
-        
+
     def test_retrieve_gets_route(self):
         route = self.viewset().list(None)
         expected = {
@@ -101,7 +101,7 @@ class ReferralViewTestCase(OpalTestCase):
         response = self.viewset().create(mock_request)
         episode = self.patient.episode_set.get(category='testing')
         self.assertEqual(['test'], episode.get_tag_names(None))
-        
+
     def test_refer_calls_post_create(self):
         mock_request = MagicMock(name='Mock request')
         mock_request.data = {
@@ -111,4 +111,3 @@ class ReferralViewTestCase(OpalTestCase):
             response = self.viewset().create(mock_request)
             episode = self.patient.episode_set.get(category='testing')
             mock_create.assert_called_with(episode, mock_request.user)
-        

@@ -13,7 +13,7 @@ if DISPLAY_MENU:
     menuitems = [
         dict(
             href='/referrals/', display='Referrals', icon='fa fa-mail-forward',
-            activepattern='/referrals')         
+            activepattern='/referrals')
     ]
 else:
     menuitems = []
