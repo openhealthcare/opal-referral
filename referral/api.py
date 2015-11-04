@@ -34,7 +34,8 @@ class ReferralViewSet(ViewSet):
             episode = patient.episode_set.order_by("-created")
 
         for additional_model in self.referral.additional_models:
-            model_name = additional_model.__name__
+            model_name = additional_model.__name__.lower()
+
             if model_name in request.data:
                 new_model = additional_model()
                 data_dict = request.data[model_name]

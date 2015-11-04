@@ -23,8 +23,8 @@ var app = OPAL.module('opal.referral', [
 OPAL.run(app);
 
 app.config(function($routeProvider){
-    $routeProvider.when('/', {redirectTo: '/list'})
-        .when('/list', {
+    $routeProvider
+        .when('/', {
             controller: 'ReferralRouteListCtrl',
             resolve: {},
             templateUrl: '/referral/templates/list.html'
