@@ -91,11 +91,7 @@
                 Back
               </button>
               <button class="btn btn-primary pull-right"
-<<<<<<< HEAD
-                      ng-click="refer()">
-=======
                       ng-click="nextStep()">
->>>>>>> v0.1.1
                 <i class="fa fa-arrow-right"></i>
                 <span ng-if="!getNextStep()">
                   [[ route.verb ]] to [[ route.name ]]
@@ -162,13 +158,8 @@
               <!--   Change details -->
               <!-- </button> -->
               <button class="btn btn-lg btn-primary pull-right"
-<<<<<<< HEAD
-                      ng-hide="state == 'success'"
-                      ng-click="refer()">
-=======
                       ng-show="state == 'has_demographics'"
                       ng-click="nextStep()">
->>>>>>> v0.1.1
                 <i class="fa fa-arrow-right"></i>
                 <span ng-if="!getNextStep()">
                   [[ route.verb ]] to [[ route.name ]]
@@ -178,11 +169,7 @@
                 </span>
               </button>
               <button class="btn btn-lg btn-primary pull-right"
-<<<<<<< HEAD
-                      ng-show="state == 'success'"
-=======
                       ng-if="state == 'success'"
->>>>>>> v0.1.1
                       ng-click="back()">
                 <i class="fa fa-arrow-right"></i>
                 [[ route.verb ]] another
@@ -191,14 +178,8 @@
           </div>
         </div>
 
-<<<<<<< HEAD
-=======
         {% block additional_models %}
         {% endblock additional_models %}
-
->>>>>>> v0.1.1
-
-
       </div>
     </div>
   </div>

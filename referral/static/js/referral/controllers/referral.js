@@ -3,14 +3,8 @@
 //
 angular.module('opal.referral.controllers').controller(
     'ReferralCtrl', function($rootScope, $scope, $http,
-<<<<<<< HEAD
-                             focus,
-                             Episode, options,
-                             referral_route){
-=======
                              focus, Episode, options,
                              referral_route, Item){
->>>>>>> v0.1.1
         $scope.route = referral_route;
 
         // Known states are:
@@ -36,7 +30,7 @@ angular.module('opal.referral.controllers').controller(
         //
       	for (var name in options) {
       	    $scope[name + '_list'] = options[name];
-      	};
+      	}
 
         $scope.lookup_hospital_number = function() {
             Episode.findByHospitalNumber(
@@ -54,18 +48,16 @@ angular.module('opal.referral.controllers').controller(
         $scope.new_patient = function(result){
             $scope.patient = {
                 demographics: [{}]
-            }
+            };
             $scope.state = 'editing_demographics';
-            focus('input[name="patient_demographics[0]_name"]')
+            focus('input[name="patient_demographics[0]_name"]');
         };
 
         $scope.new_for_patient = function(patient){
             $scope.patient = patient;
-            $scope.post_patient_text = 'We found ' + patient.demographics[0].name + " on the system. If that's not who you meant, you can enter your patient's details yourself."
+            $scope.post_patient_text = 'We found ' + patient.demographics[0].name + " on the system. If that's not who you meant, you can enter your patient's details yourself.";
             $scope.state   = 'has_demographics';
-<<<<<<< HEAD
-=======
-        }
+        };
 
         // we allow the inclusion of additional steps, if additional steps don't exist
         // we can just go ahead and refer
@@ -82,7 +74,7 @@ angular.module('opal.referral.controllers').controller(
 
             currentIndex = _.findIndex($scope.additionalModels, function(am){
                 return am.name == $scope.state;
-            })
+            });
 
             if(currentIndex === -1){
                 return $scope.additionalModels[0];
@@ -100,33 +92,19 @@ angular.module('opal.referral.controllers').controller(
             else{
                 $scope.state = nextStep.name;
             }
-        }
+        };
 
         $scope.currentAdditionalData = function(){
             return _.find($scope.additionalModels, function(am){
                 return am.name === $scope.state ;
             });
->>>>>>> v0.1.1
-        }
+        };
 
         $scope.refer = function(){
             var demographics = _.clone($scope.patient.demographics[0]);
             if(demographics.date_of_birth){
                 demographics.date_of_birth = moment(demographics.date_of_birth, 'DD/MM/YYYY').format('YYYY-MM-DD');
             }
-<<<<<<< HEAD
-            $http.post('/api/v0.1/referral/' + $scope.route.slug + '/',
-                       {
-                           hospital_number: $scope.hospital_number,
-                           demographics   : demographics
-                       }).then(
-                           function(response){
-                               $scope.post_patient_text = null;
-                               $scope.success_link = response.data.success_link;
-                               $scope.state = 'success';
-                       })
-        };
-=======
 
             var postData = {
                  hospital_number: $scope.hospital_number,
@@ -142,11 +120,11 @@ angular.module('opal.referral.controllers').controller(
                function(){
                   $scope.post_patient_text = null;
                   $scope.state = 'success';
+                  $scope.success_link = response.data.success_link;
                   // clean out the additional model data
                   cleanAdditionalModelData();
                 });
             };
->>>>>>> v0.1.1
 
         //
         // Return to the start of this referral route.
@@ -156,6 +134,6 @@ angular.module('opal.referral.controllers').controller(
             $scope.patient = null;
             $scope.hospital_number = null;
             $scope.post_patient_text = null;
-        }
+        };
 
     });
