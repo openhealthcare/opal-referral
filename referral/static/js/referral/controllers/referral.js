@@ -30,8 +30,7 @@ angular.module('opal.referral.controllers').controller(
         //
       	for (var name in options) {
       	    $scope[name + '_list'] = options[name];
-      	};
-
+      	}
 
         $scope.lookup_hospital_number = function() {
             Episode.findByHospitalNumber(
@@ -49,16 +48,16 @@ angular.module('opal.referral.controllers').controller(
         $scope.new_patient = function(result){
             $scope.patient = {
                 demographics: [{}]
-            }
+            };
             $scope.state = 'editing_demographics';
-            focus('input[name="patient_demographics[0]_name"]')
+            focus('input[name="patient_demographics[0]_name"]');
         };
 
         $scope.new_for_patient = function(patient){
             $scope.patient = patient;
-            $scope.post_patient_text = 'We found ' + patient.demographics[0].name + " on the system. If that's not who you meant, you can enter your patient's details yourself."
+            $scope.post_patient_text = 'We found ' + patient.demographics[0].name + " on the system. If that's not who you meant, you can enter your patient's details yourself.";
             $scope.state   = 'has_demographics';
-        }
+        };
 
         // we allow the inclusion of additional steps, if additional steps don't exist
         // we can just go ahead and refer
@@ -75,7 +74,7 @@ angular.module('opal.referral.controllers').controller(
 
             currentIndex = _.findIndex($scope.additionalModels, function(am){
                 return am.name == $scope.state;
-            })
+            });
 
             if(currentIndex === -1){
                 return $scope.additionalModels[0];
@@ -93,13 +92,13 @@ angular.module('opal.referral.controllers').controller(
             else{
                 $scope.state = nextStep.name;
             }
-        }
+        };
 
         $scope.currentAdditionalData = function(){
             return _.find($scope.additionalModels, function(am){
                 return am.name === $scope.state ;
             });
-        }
+        };
 
         $scope.refer = function(){
             var demographics = _.clone($scope.patient.demographics[0]);
@@ -118,9 +117,10 @@ angular.module('opal.referral.controllers').controller(
             });
 
             $http.post('/api/v0.1/referral/' + $scope.route.slug + '/', postData).then(
-               function(){
+               function(response){
                   $scope.post_patient_text = null;
                   $scope.state = 'success';
+                  $scope.success_link = response.data.success_link;
                   // clean out the additional model data
                   cleanAdditionalModelData();
                 });
@@ -134,6 +134,6 @@ angular.module('opal.referral.controllers').controller(
             $scope.patient = null;
             $scope.hospital_number = null;
             $scope.post_patient_text = null;
-        }
+        };
 
     });

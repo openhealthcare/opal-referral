@@ -6,6 +6,3 @@ angular.module('opal.referral.controllers').controller(
 
     }
 );
-
-
-

@@ -12,7 +12,7 @@ DISPLAY_MENU = getattr(settings, 'REFERRAL_MENU_ITEM', True)
 if DISPLAY_MENU:
     menuitems = [
         dict(
-            href='/referrals/', display='Referrals', icon='fa fa-mail-forward',
+            href='/referrals/#/', display='Referrals', icon='fa fa-mail-forward',
             activepattern='/referrals')
     ]
 else:
