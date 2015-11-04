@@ -117,7 +117,7 @@ angular.module('opal.referral.controllers').controller(
             });
 
             $http.post('/api/v0.1/referral/' + $scope.route.slug + '/', postData).then(
-               function(){
+               function(response){
                   $scope.post_patient_text = null;
                   $scope.state = 'success';
                   $scope.success_link = response.data.success_link;
