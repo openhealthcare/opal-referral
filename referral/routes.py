@@ -76,7 +76,6 @@ class ReferralRoute(object):
             name=klass.name,
             description=klass.description,
             slug=klass.slug(),
-            success_link=klass.success_link,
             verb=klass.verb,
             progressive_verb=klass.progressive_verb,
             past_verb=klass.past_verb,
@@ -92,3 +91,6 @@ class ReferralRoute(object):
         immediately after it has been created.
         """
         return
+
+    def get_success_link(self, episode):
+        return self.success_link
