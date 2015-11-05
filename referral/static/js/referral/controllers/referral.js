@@ -12,7 +12,6 @@ angular.module('opal.referral.controllers').controller(
         $scope.state = 'initial';
         $scope.hospital_number = null;
         $scope.patient = null;
-        $scope.post_patient_text = null;
         $scope.additionalModelsData = {};
 
         var cleanAdditionalModelData = function(){
@@ -56,7 +55,6 @@ angular.module('opal.referral.controllers').controller(
 
         $scope.new_for_patient = function(patient){
             $scope.patient = patient;
-            $scope.post_patient_text = 'We found ' + patient.demographics[0].name + " on the system. If that's not who you meant, you can enter your patient's details yourself."
             $scope.state   = 'has_demographics';
         }
 
@@ -119,7 +117,6 @@ angular.module('opal.referral.controllers').controller(
 
             $http.post('/api/v0.1/referral/' + $scope.route.slug + '/', postData).then(
                function(){
-                  $scope.post_patient_text = null;
                   $scope.state = 'success';
                   // clean out the additional model data
                   cleanAdditionalModelData();
@@ -133,7 +130,6 @@ angular.module('opal.referral.controllers').controller(
             $scope.state = 'initial';
             $scope.patient = null;
             $scope.hospital_number = null;
-            $scope.post_patient_text = null;
-        }
+        };
 
     });
