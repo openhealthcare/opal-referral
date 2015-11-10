@@ -12,3 +12,4 @@ script:
   - rake test
 notifications:
   slack: ohcuk:6spaME3CB7f2PGrMAcklYWqp
+sudo: false
