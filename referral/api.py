@@ -18,7 +18,7 @@ class ReferralViewSet(ViewSet):
             demographics__hospital_number=hospital_number
         )
         demographics = patient.demographics_set.get()
-        target_teams = self.referral.target_teams
+        target_teams = set(self.referral.target_teams)
         if created:
             demographics.hospital_number = hospital_number
             demographics.save()
@@ -33,7 +33,7 @@ class ReferralViewSet(ViewSet):
             episode = patient.create_episode()
         else:
             episode = patient.episode_set.order_by("-created").first()
-            target_teams.extend(episode.tagging_set.all())
+            target_teams = target_teams.union(episode.get_tag_names(request.user))
 
         for additional_model in self.referral.additional_models:
             model_name = additional_model.__name__.lower()
@@ -47,7 +47,7 @@ class ReferralViewSet(ViewSet):
         if self.referral.target_category:
             episode.category = self.referral.target_category
             episode.save()
-        episode.set_tag_names(target_teams, request.user)
+        episode.set_tag_names(list(target_teams), request.user)
         referral = self.referral()
         referral.post_create(episode, request.user)
         success_link = referral.get_success_link(episode)

@@ -22,13 +22,21 @@ class TestRoute(ReferralRoute):
     def post_create(self, episode, user):
         return
 
+
+class TestDontCreate(TestRoute):
+    name            = "View Don't create Test Route"
+    create_new_episode = False
+
+
 class ReferralViewTestCase(OpalTestCase):
     def setUp(self):
         self.test_team = Team.objects.get_or_create(name='test')
         for name, viewset in api.viewsets():
             if viewset.referral == TestRoute:
                 self.viewset = viewset
-                break
+            if viewset.referral == TestDontCreate:
+                self.dont_create_viewset = viewset
+
         self.request = RequestFactory().post('/referral/refer')
         self.patient = Patient.objects.create()
         self.episode = Episode.objects.create(patient=self.patient)
@@ -118,3 +126,18 @@ class ReferralViewTestCase(OpalTestCase):
             response = self.viewset().create(mock_request)
             episode = self.patient.episode_set.get(category='testing')
             mock_create.assert_called_with(episode, mock_request.user)
+
+    def test_dont_create(self):
+        old_team = Team.objects.get_or_create(name='old_team')
+        self.episode.tagging_set.create(team=old_team)
+        mock_request = MagicMock(name='Mock request')
+        mock_request.data = {
+            'hospital_number': self.demographics.hospital_number
+        }
+        mock_request.user = self.user
+        self.assertEqual(1, self.patient.episode_set.count())
+        response = self.viewset().create(mock_request)
+        self.assertEqual(201, response.status_code)
+        self.assertEqual(1, self.patient.episode_set.count())
+        new_team_names = set(self.episode.get_tag_names(self.user))
+        self.assertEqual(new_team_names, {'old_team', 'test'})
