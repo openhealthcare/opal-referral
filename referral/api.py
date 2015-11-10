@@ -31,7 +31,7 @@ class ReferralViewSet(ViewSet):
         if self.referral.create_new_episode or not patient.episode_set.count():
             episode = patient.create_episode()
         else:
-            episode = patient.episode_set.order_by("-created")
+            episode = patient.episode_set.order_by("-created").first()
 
         for additional_model in self.referral.additional_models:
             model_name = additional_model.__name__.lower()
