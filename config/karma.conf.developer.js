@@ -47,7 +47,7 @@ module.exports = function(config){
             '../../../../opal-referral/referral/static/js/referral/*.js',
             '../../../../opal-referral/referral/static/js/referral/controllers/*.js',
             '../../../../opal-referral/referral/static/js/test/*.js',
-            
+
             // 'opaltest/*.js',
             // '../../../../elcid/elcid/assets/js/elcidtest/*.js',
         ],
