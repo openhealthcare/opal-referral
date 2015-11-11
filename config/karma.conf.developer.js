@@ -1,7 +1,7 @@
 module.exports = function(config){
     config.set({
         frameworks: ['jasmine'],
-        browsers: ['PhantomJS'],
+        browsers: ['Firefox'],
         basePath:  '/usr/lib/ohc/opal/opal/static/js',
 
         files: [
