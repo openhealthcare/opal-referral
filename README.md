@@ -1,5 +1,7 @@
 Referral Portal plugin for OPAL
 
+This allows users to refer patients to other clinical services.
+
 ## Defining a referral Route.
 
 We expect referral routes to be located in `yourapp.referrals`.
