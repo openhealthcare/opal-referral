@@ -44,7 +44,7 @@ module.exports = function(config){
             __dirname+'/../referral/static/js/referral/*.js',
             __dirname+'/../referral/static/js/referral/controllers/*.js',
             __dirname+'/../referral/static/js/test/*.js',
-            
+
         ],
 
         // Stolen from http://oligofren.wordpress.com/2014/05/27/running-karma-tests-on-browserstack/
@@ -56,5 +56,3 @@ module.exports = function(config){
 
     })
 }
-
-

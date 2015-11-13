@@ -1,13 +1,16 @@
 """
-Standalone test runner for wardrounds plugin
+Standalone test runner for OPAT plugin
 """
+import os
 import sys
+
+from django.conf import settings
+
 from opal.core import application
 
 class Application(application.OpalApplication):
-    pass
+    schema_module = 'opal.tests.dummy_opal_application'
 
-from django.conf import settings
 
 settings.configure(DEBUG=True,
                    DATABASES={
@@ -23,6 +26,7 @@ settings.configure(DEBUG=True,
                        'django.contrib.staticfiles.finders.FileSystemFinder',
                        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
                        'compressor.finders.CompressorFinder',),
+                   COMPRESS_ROOT='/tmp/',
                    MIDDLEWARE_CLASSES = (
                        'django.middleware.common.CommonMiddleware',
                        'django.contrib.sessions.middleware.SessionMiddleware',
@@ -37,21 +41,23 @@ settings.configure(DEBUG=True,
                    INSTALLED_APPS=('django.contrib.auth',
                                    'django.contrib.contenttypes',
                                    'django.contrib.sessions',
-                                   'django.contrib.staticfiles',
                                    'django.contrib.admin',
+                                   'django.contrib.staticfiles',
                                    'compressor',
                                    'opal',
                                    'opal.tests',
-                                   'referral',))
+                                   'referral',),)
+
+from referral.tests import dummy_options_module
+
+import django
+django.setup()
 
 import django
 django.setup()
 
 from django.test.runner import DiscoverRunner
 test_runner = DiscoverRunner(verbosity=1)
-if len(sys.argv) == 2:
-    failures = test_runner.run_tests([sys.argv[-1], ])
-else:
-    failures = test_runner.run_tests(['referral', ])
+failures = test_runner.run_tests(['referral', ])
 if failures:
     sys.exit(failures)
