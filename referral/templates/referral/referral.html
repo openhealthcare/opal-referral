@@ -3,30 +3,44 @@
 {% block panel_body %}
 
 <div class="row">
-  <div class="col-md-6">
-    <p class="lead" ng-hide="state == 'success'">
-      1. <b>who</b> are you [[ route.progressive_verb.toLowerCase() ]] to [[ route.name ]] ?
+  <div class="col-md-6 col-md-offset-3">
+    <p class="lead" ng-show="state == 'editing_demographics' || state == 'initial'">
+      <b>Who</b> are you [[ route.progressive_verb.toLowerCase() ]] to [[ route.name ]] ?
     </p>
+    {% block has_demographics_title %}
+    <p class="lead" ng-show="state == 'has_demographics'">
+      We've found [[ patient.demographics[0].name ]]
+    </p>
+    {% endblock %}
+    {% block additional_models_title %}
+    {% endblock %}
     <p class="lead" ng-show="state == 'success'">
-      <i class="fa fa-check"></i> [[ route.past_verb ]] [[ patient.demographics[0].name]] to 
-      <a href="[[ route.success_link ]]"> [[ route.name ]]</a>.
+      <i class="fa fa-check"></i> [[ route.past_verb ]] [[ patient.demographics[0].name]] to
+      <span ng-show="success_link" >
+        <a href="[[ success_link ]]">[[ route.name ]]</a>.
+      </span>
+      <span ng-hide="success_link">[[ route.name ]].</span>
     </p>
 
   </div>
 </div>
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3>
+        <h3 ng-hide="currentAdditionalData()">
           <i class="fa fa-user"></i>
           Patient Details
         </h3>
+        <h3 ng-show="currentAdditionalData()">
+          {% block additional_models_header %}
+          {% endblock %}
+        </h3>
       </div>
       <div class="panel-body">
-        
+
         <!-- Initial state - enter hospital numbe -->
-        <div class="row" ng-show="state == 'initial'">         
+        <div class="row" ng-show="state == 'initial'">
           <div class="col-sm-8">
             <h4>Hospital number</h4>
             <input autofocus class="form-control" type="text"
@@ -34,14 +48,15 @@
                    ng-keypress="$event.keyCode == 13 && lookup_hospital_number()"
                    />
             <br />
+            <button class="btn btn-lg btn-primary" ng-click="lookup_hospital_number()">
+              <i class="fa fa-search"></i>
+              Search
+            </button>
+            <br />
             <p>
               If we already have your patient on the system, we can pull their
               details for you
             </p>
-            <button class="btn btn-lg btn-primary" ng-click="lookup_hospital_number()">
-              <i class="fa fa-search"></i>
-              Find your patient
-            </button>
           </div>
         </div>
 
@@ -50,14 +65,14 @@
           <div class="row">
             <div class="col-md-12">
               <form class="form-horizontal">
-                
+
 	        <div class="form-group">
 	          <label class="control-label col-sm-3">Hospital</label>
                   <label class="control-label col-sm-8 text-left">
                     [[ hospital_number ]]
                   </label>
 	        </div>
-                
+
                 {% input "autofocus" label="Name" model="patient.demographics[0].name" %}
 	        <div class="form-group">
 	          <label class="control-label col-sm-3">Date of birth</label>
@@ -74,29 +89,30 @@
 	          </div>
 	        </div>
                 {% select label="Gender" model="patient.demographics[0].gender" lookuplist="gender_list" %}
-              </form>             
+              </form>
             </div>
             <div class="col-md-10 col-md-offset-1">
-              <button class="btn btn-secondary pull-left" 
-                      ng-click="back()" tabindex="-1">
-                <i class="fa fa-arrow-left"></i>
-                Back
-              </button>
-              <button class="btn btn-primary pull-right" 
-                      ng-click="refer()">
+              {% include "referral/_includes/back_button.html" %}
+              <button class="btn btn-lg btn-primary pull-right"
+                      ng-click="nextStep()">
                 <i class="fa fa-arrow-right"></i>
-                [[ route.verb ]] to [[ route.name ]]
+                <span ng-if="!getNextStep()">
+                  [[ route.verb ]] to [[ route.name ]]
+                </span>
+                <span ng-if="getNextStep()">
+                  [[ getNextStep().display_name ]]
+                </span>
               </button>
 
-            </div> 
+            </div>
 
           </diV>
         </div>
 
-        
 
-        <!-- Has demographics state -->
-        <div class="row" ng-show="state == 'has_demographics' || state == 'success'">
+
+        <span ng-show="state === 'has_demographics' || state === 'success'">
+        <div class="row">
           <div class="col-sm-8">
             <div class="row">
               <div class="col-md-4">
@@ -131,37 +147,47 @@
               </div>
             </div>
             <br />
-            <p>
-              [[ post_patient_text ]]
-            </p>
           </div>
+          </div>
+        </span>
+
+          <div class="row content-offset-25">
           <div class="col-sm-12">
             <p>
+              {% block has_demographics_buttons %}
+              <span ng-show="state == 'has_demographics'">
               <!-- <button class="btn btn-lg btn-secondary" ng-click="edit_demographics()"> -->
               <!--   <i class="fa fa-edit"></i> -->
               <!--   Change details -->
               <!-- </button> -->
-              <button class="btn btn-lg btn-primary pull-right" 
-                      ng-hide="state == 'success'"
-                      ng-click="refer()">
-                <i class="fa fa-arrow-right"></i>
-                [[ route.verb ]] to [[ route.name ]]
-              </button>
-              <button class="btn btn-lg btn-primary pull-right" 
-                      ng-show="state == 'success'"
+                {% include "referral/_includes/back_button.html" %}
+                <button class="btn btn-lg btn-primary pull-right"
+                        ng-show="state == 'has_demographics'"
+                        ng-click="nextStep()">
+                  <i class="fa fa-arrow-right"></i>
+                  <span ng-if="!getNextStep()">
+                    [[ route.verb ]] to [[ route.name ]]
+                  </span>
+                  <span ng-if="getNextStep()">
+                    [[ getNextStep().display_name ]]
+                  </span>
+                </button>
+              </span>
+              {% endblock has_demographics_buttons %}
+              <button class="btn btn-lg btn-primary pull-right"
+                      ng-if="state == 'success'"
                       ng-click="back()">
                 <i class="fa fa-arrow-right"></i>
                 [[ route.verb ]] another
-              </button>              
+              </button>
             </p>
           </div>
         </div>
 
-        
-
+        {% block additional_models %}
+        {% endblock additional_models %}
       </div>
-    </div>          
+    </div>
   </div>
 </div>
 {% endblock %}
-
