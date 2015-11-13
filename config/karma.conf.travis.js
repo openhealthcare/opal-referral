@@ -28,6 +28,8 @@ module.exports = function(config){
           'angular-strap-2.3.1/modules/timepicker.tpl.js',
           'angular-strap-2.3.1/modules/typeahead.js',
           'angular-strap-2.3.1/modules/typeahead.tpl.js',
+          "angulartics-0.17.2/angulartics.min.js",
+          "angulartics-0.17.2/angulartics-ga.min.js",
           'ngprogress-lite/ngprogress-lite.js',
           'jquery-1.11.3/jquery-1.11.3.js',
           'utils/underscore.js',
