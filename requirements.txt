@@ -1,4 +1,4 @@
 python-dateutil==2.4.2
 django==1.8.3
--e git://github.com/openhealthcare/opal.git@27-unit-test-fixes#egg=opal
+-e git://github.com/openhealthcare/opal.git@v0.5.1#egg=opal
 mock
