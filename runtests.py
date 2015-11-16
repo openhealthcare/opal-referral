@@ -20,8 +20,13 @@ settings.configure(DEBUG=True,
                    },
                    OPAL_OPTIONS_MODULE = 'referral.tests.dummy_options_module',
                    ROOT_URLCONF='referral.urls',
+                   STATIC_URL='/assets/',
+                   STATIC_ROOT='static',
+                   STATICFILES_FINDERS = (
+                       'django.contrib.staticfiles.finders.FileSystemFinder',
+                       'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+                       'compressor.finders.CompressorFinder',),
                    COMPRESS_ROOT='/tmp/',
-                   STATIC_URL = '/assets/',
                    MIDDLEWARE_CLASSES = (
                        'django.middleware.common.CommonMiddleware',
                        'django.contrib.sessions.middleware.SessionMiddleware',
@@ -48,6 +53,8 @@ from referral.tests import dummy_options_module
 import django
 django.setup()
 
+import django
+django.setup()
 
 from django.test.runner import DiscoverRunner
 test_runner = DiscoverRunner(verbosity=1)

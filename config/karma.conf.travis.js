@@ -55,8 +55,6 @@ module.exports = function(config){
             __dirname+'/../referral/static/js/referral/controllers/*.js',
             __dirname+'/../referral/static/js/test/*.js',
 
-            // 'opaltest/*.js',
-            // '../../../../elcid/elcid/assets/js/elcidtest/*.js',
         ],
 
         // Stolen from http://oligofren.wordpress.com/2014/05/27/running-karma-tests-on-browserstack/
