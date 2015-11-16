@@ -5,6 +5,8 @@ angular.module('opal.referral.controllers').controller(
     'ReferralCtrl', function($rootScope, $scope, $http,
                              focus, Episode, options,
                              referral_route, Item){
+
+        "use strict";
         $scope.route = referral_route;
 
         // Known states are:

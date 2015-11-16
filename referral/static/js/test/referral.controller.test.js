@@ -1,6 +1,8 @@
 describe('ReferralCtrl', function (){
+    "use strict";
+
     var $controller, $scope, $httpBackend, $rootScope;
-    var options, referral_route
+    var options, referral_route, controller;
 
     beforeEach(module('opal.referral.controllers'));
 
@@ -23,11 +25,10 @@ describe('ReferralCtrl', function (){
         });
     }));
 
-
     describe('new_patient()', function (){
         it('Should set $scope.patient', function () {
             expect($scope.patient).toBe(null);
-            $scope.new_patient()
+            $scope.new_patient();
             expect($scope.patient.demographics).toEqual([{}]);
         });
     });

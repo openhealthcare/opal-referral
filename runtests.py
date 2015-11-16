@@ -1,5 +1,5 @@
 """
-Standalone test runner for OPAT plugin
+Standalone test runner for referral plugin
 """
 import os
 import sys
