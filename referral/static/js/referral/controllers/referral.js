@@ -102,9 +102,6 @@ angular.module('opal.referral.controllers').controller(
 
         $scope.refer = function(){
             var demographics = _.clone($scope.patient.demographics[0]);
-            if(demographics.date_of_birth){
-                demographics.date_of_birth = moment(demographics.date_of_birth, 'DD/MM/YYYY').format('YYYY-MM-DD');
-            }
 
             var postData = {
                  hospital_number: $scope.hospital_number,
