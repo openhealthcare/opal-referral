@@ -12,4 +12,3 @@ class ReferralIndexTestCase(OpalTestCase):
     def test_index(self):
         self.assertTrue(self.client.login(username='testuser', password='password'))
         self.assertStatusCode('/referrals/', 200)
-        
