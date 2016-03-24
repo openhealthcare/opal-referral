@@ -3,7 +3,7 @@
 //
 angular.module('opal.referral.controllers').controller(
     'ReferralCtrl', function($rootScope, $scope, $http,
-                             focus, Episode, options,
+                             Episode, options,
                              referral_route, Item){
 
         "use strict";
@@ -51,7 +51,6 @@ angular.module('opal.referral.controllers').controller(
                 demographics: [{}]
             };
             $scope.state = 'editing_demographics';
-            focus('input[name="patient_demographics[0]_name"]');
         };
 
         $scope.new_for_patient = function(patient){

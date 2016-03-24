@@ -9,13 +9,13 @@
     </p>
     {% block has_demographics_title %}
     <p class="lead" ng-show="state == 'has_demographics'">
-      We've found [[ patient.demographics[0].name ]]
+      We've found [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]]
     </p>
     {% endblock %}
     {% block additional_models_title %}
     {% endblock %}
     <p class="lead" ng-show="state == 'success'">
-      <i class="fa fa-check"></i> [[ route.past_verb ]] [[ patient.demographics[0].name]] to
+      <i class="fa fa-check"></i> [[ route.past_verb ]] [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]] to
       <span ng-show="success_link" >
         <a href="[[ success_link ]]">[[ route.name ]]</a>.
       </span>
@@ -73,7 +73,8 @@
                   </label>
 	        </div>
 
-                {% input "autofocus" label="Name" model="patient.demographics[0].name" %}
+                {% input "autofocus" label="First name" model="patient.demographics[0].first_name" %}
+                {% input label="Surname" model="patient.demographics[0].surname" %}
 	        <div class="form-group">
 	          <label class="control-label col-sm-3">Date of birth</label>
 	          <div class="col-sm-8">
@@ -89,7 +90,7 @@
                     </span>
 	          </div>
 	        </div>
-                {% select label="Gender" model="patient.demographics[0].gender" lookuplist="gender_list" %}
+                {% select label="Sex" model="patient.demographics[0].sex" lookuplist="gender_list" %}
               </form>
             </div>
             <div class="col-md-10 col-md-offset-1">
@@ -109,46 +110,44 @@
 
           </diV>
         </div>
-
-
-
         <span ng-show="state === 'has_demographics' || state === 'success'">
-        <div class="row">
-          <div class="col-sm-8">
-            <div class="row">
-              <div class="col-md-4">
-                <b>Hospital #</b>
+          <div class="row">
+            <div class="col-sm-8">
+              <div class="row">
+                <div class="col-md-4">
+                  <b>Hospital #</b>
+                </div>
+                <div class="col-md-8">
+                  [[ hospital_number ]]
+                </div>
               </div>
-              <div class="col-md-8">
-                [[ hospital_number ]]
+              <div class="row">
+                <div class="col-md-4">
+                  <b>Name</b>
+                </div>
+                <div class="col-md-8">
+                  [[ patient.demographics[0].first_name ]]
+                  [[ patient.demographics[0].surname ]]
+                </div>
               </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <b>Date of Birth</b>
+                </div>
+                <div class="col-md-8">
+                  [[ patient.demographics[0].date_of_birth | shortDate ]]
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <b>Sex</b>
+                </div>
+                <div class="col-md-8">
+                  [[ patient.demographics[0].sex ]]
+                </div>
+              </div>
+              <br />
             </div>
-            <div class="row">
-              <div class="col-md-4">
-                <b>Name</b>
-              </div>
-              <div class="col-md-8">
-                [[ patient.demographics[0].name ]]
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <b>Date of Birth</b>
-              </div>
-              <div class="col-md-8">
-                [[ patient.demographics[0].date_of_birth | shortDate ]]
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <b>Gender</b>
-              </div>
-              <div class="col-md-8">
-                [[ patient.demographics[0].gender ]]
-              </div>
-            </div>
-            <br />
-          </div>
           </div>
         </span>
 
