@@ -7,6 +7,7 @@ angular.module('opal.referral.controllers').controller(
                              referral_route, Item){
 
         "use strict";
+        var DATE_FORMAT = 'DD/MM/YYYY';
         $scope.route = referral_route;
 
         // Known states are:
@@ -34,11 +35,20 @@ angular.module('opal.referral.controllers').controller(
       	}
 
         $scope.lookup_hospital_number = function() {
+            var patientFound = function(result){
+              if(result.merged && result.merged.length){
+                $scope.mergePatient(result);
+              }
+              else{
+                $scope.newForPatient(result);
+              }
+            };
+
             Episode.findByHospitalNumber(
                 $scope.hospital_number,
                 {
-                    newPatient:    $scope.new_patient,
-                    newForPatient: $scope.new_for_patient,
+                    newPatient:    $scope.newPatient,
+                    newForPatient: patientFound,
                     error        : function(){
                         // This shouldn't happen, but we should probably handle it better
                         alert('ERROR: More than one patient found with hospital number');
@@ -46,16 +56,22 @@ angular.module('opal.referral.controllers').controller(
                 });
         };
 
-        $scope.new_patient = function(result){
+        $scope.newPatient = function(result){
             $scope.patient = {
                 demographics: [{}]
             };
             $scope.state = 'editing_demographics';
         };
 
-        $scope.new_for_patient = function(patient){
+        $scope.newForPatient = function(patient){
             $scope.patient = patient;
             $scope.state   = 'has_demographics';
+        };
+
+        $scope.mergePatient = function(patient){
+            $scope.patient = patient.merged[0];
+            $scope.patient.old_hospital_number = patient.demographics[0].hospital_number;
+            $scope.state   = 'merge_demographics';
         };
 
         // we allow the inclusion of additional steps, if additional steps don't exist
@@ -101,6 +117,11 @@ angular.module('opal.referral.controllers').controller(
 
         $scope.refer = function(){
             var demographics = _.clone($scope.patient.demographics[0]);
+
+            if(demographics && demographics.date_of_birth){
+                var date_of_birth = moment(demographics.date_of_birth).format(DATE_FORMAT);
+                demographics.date_of_birth = date_of_birth;
+            }
 
             var postData = {
                  hospital_number: $scope.hospital_number,

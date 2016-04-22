@@ -25,10 +25,10 @@ describe('ReferralCtrl', function (){
         });
     }));
 
-    describe('new_patient()', function (){
+    describe('newPatient()', function (){
         it('Should set $scope.patient', function () {
             expect($scope.patient).toBe(null);
-            $scope.new_patient();
+            $scope.newPatient();
             expect($scope.patient.demographics).toEqual([{}]);
         });
     });
@@ -36,14 +36,14 @@ describe('ReferralCtrl', function (){
     describe('refer()', function (){
         it('Should hit the api', function () {
             $scope.hospital_number = '1234';
-
             $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
+            $httpBackend.expectGET('/api/v0.1/record/').respond({});
             $httpBackend.expectPOST('/api/v0.1/referral/test/', {
                 hospital_number: '1234',
                 demographics   : {}
             }).respond({success_link: '/#/something'});
 
-            $scope.new_patient();
+            $scope.newPatient();
             $scope.refer();
             $httpBackend.flush();
 
