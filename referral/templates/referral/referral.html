@@ -11,17 +11,24 @@
     <p class="lead" ng-show="state == 'has_demographics'">
       We've found [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]]
     </p>
-    <p class="lead" ng-show="state == 'merge_demographics'">
-      [[ patient.old_hospital_number ]] has been merged into
-      [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]]
-    </p>
-    <div  ng-show="state == 'editing_demographics'">
+    <div  ng-show="state == 'merge_demographics'">
       <p class="lead">
-        We couldn't find any patients with this hospital number.
+        [[ patient.old_hospital_number ]] has been <b>merged</b> into [[ patient.demographics[0].hospital_number ]].
       </p>
       <p class="lead">
-        If the patient is unknown to the hospital you could add them as an elCID
-        only patient
+        The correct patient for this hospital number is now
+        <b>[[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]] ([[ patient.demographics[0].hospital_number ]])</b>
+      </p>
+    </div>
+    <div  ng-show="state == 'editing_demographics'">
+      <p class="lead text-center">
+        We couldn't find any patients with this hospital number.
+      </p>
+      <p class="lead text-center">
+        <b>Please check you have entered the hospital number correctly</b>
+      </p>
+      <p class="lead text-center">
+        If this is the correct number and the patient is currently at a different hospital or in the community you can add them as an elCID only patient
       </p>
     </div>
     {% endblock %}
