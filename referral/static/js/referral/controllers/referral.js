@@ -3,7 +3,7 @@
 //
 angular.module('opal.referral.controllers').controller(
     'ReferralCtrl', function($rootScope, $scope, $http,
-                             Episode, options,
+                             Episode, options, recordFields,
                              referral_route, Item){
 
         "use strict";
