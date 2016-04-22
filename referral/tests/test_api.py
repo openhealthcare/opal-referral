@@ -135,8 +135,7 @@ class ReferralViewTestCase(OpalTestCase):
             mock_create.assert_called_with(episode, mock_request.user)
 
     def test_dont_create(self):
-        old_team, _ = Team.objects.get_or_create(name='old_team')
-        self.episode.tagging_set.create(team=old_team)
+        self.episode.set_tag_names(["old_team"], self.user)
         mock_request = MagicMock(name='Mock request')
         mock_request.data = {
             'hospital_number': self.demographics.hospital_number
