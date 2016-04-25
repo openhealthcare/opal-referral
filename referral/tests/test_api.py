@@ -93,13 +93,15 @@ class ReferralViewTestCase(OpalTestCase):
         mock_request.data = {
             'hospital_number': self.demographics.hospital_number,
             'demographics'   : {
-                'name': 'Test Patient'
+                'first_name': 'Test',
             }
         }
         mock_request.user = self.user
-        self.assertEqual(None, self.patient.demographics_set.get().name)
-        response = self.viewset().create(mock_request)
-        self.assertEqual('Test Patient', self.patient.demographics_set.get().name)
+        self.assertEqual(None, self.patient.demographics_set.get().first_name)
+        self.viewset().create(mock_request)
+        self.assertEqual(
+            'Test', self.patient.demographics_set.get().first_name
+        )
 
     def test_refer_creates_correct_episode_category(self):
         mock_request = MagicMock(name='Mock request')
@@ -108,7 +110,7 @@ class ReferralViewTestCase(OpalTestCase):
         }
         mock_request.user = self.user
         self.assertEqual(0, self.patient.episode_set.filter(category='testing').count())
-        response = self.viewset().create(mock_request)
+        self.viewset().create(mock_request)
         self.assertEqual(1, self.patient.episode_set.filter(category='testing').count())
 
     def test_refer_sets_tag_names(self):
@@ -117,9 +119,9 @@ class ReferralViewTestCase(OpalTestCase):
             'hospital_number': self.demographics.hospital_number
         }
         mock_request.user = self.user
-        response = self.viewset().create(mock_request)
+        self.viewset().create(mock_request)
         episode = self.patient.episode_set.get(category='testing')
-        self.assertEqual(['test'], episode.get_tag_names(None))
+        self.assertEqual(['test'], list(episode.get_tag_names(None)))
 
     def test_refer_calls_post_create(self):
         mock_request = MagicMock(name='Mock request')
@@ -133,8 +135,7 @@ class ReferralViewTestCase(OpalTestCase):
             mock_create.assert_called_with(episode, mock_request.user)
 
     def test_dont_create(self):
-        old_team, _ = Team.objects.get_or_create(name='old_team')
-        self.episode.tagging_set.create(team=old_team)
+        self.episode.set_tag_names(["old_team"], self.user)
         mock_request = MagicMock(name='Mock request')
         mock_request.data = {
             'hospital_number': self.demographics.hospital_number

@@ -2,8 +2,8 @@
 // Referr a patient
 //
 angular.module('opal.referral.controllers').controller(
-    'ReferralCtrl', function($rootScope, $scope, $http,
-                             focus, Episode, options,
+    'ReferralCtrl', function($rootScope, $scope, $http, FieldTranslater,
+                             Episode, options, recordFields,
                              referral_route, Item){
 
         "use strict";
@@ -34,11 +34,20 @@ angular.module('opal.referral.controllers').controller(
       	}
 
         $scope.lookup_hospital_number = function() {
+            var patientFound = function(result){
+              if(result.merged && result.merged.length){
+                $scope.mergePatient(result);
+              }
+              else{
+                $scope.newForPatient(result);
+              }
+            };
+
             Episode.findByHospitalNumber(
                 $scope.hospital_number,
                 {
-                    newPatient:    $scope.new_patient,
-                    newForPatient: $scope.new_for_patient,
+                    newPatient:    $scope.newPatient,
+                    newForPatient: patientFound,
                     error        : function(){
                         // This shouldn't happen, but we should probably handle it better
                         alert('ERROR: More than one patient found with hospital number');
@@ -46,17 +55,22 @@ angular.module('opal.referral.controllers').controller(
                 });
         };
 
-        $scope.new_patient = function(result){
+        $scope.newPatient = function(result){
             $scope.patient = {
                 demographics: [{}]
             };
             $scope.state = 'editing_demographics';
-            focus('input[name="patient_demographics[0]_name"]');
         };
 
-        $scope.new_for_patient = function(patient){
+        $scope.newForPatient = function(patient){
             $scope.patient = patient;
             $scope.state   = 'has_demographics';
+        };
+
+        $scope.mergePatient = function(patient){
+            $scope.patient = patient.merged[0];
+            $scope.patient.old_hospital_number = patient.demographics[0].hospital_number;
+            $scope.state   = 'merge_demographics';
         };
 
         // we allow the inclusion of additional steps, if additional steps don't exist
@@ -101,22 +115,19 @@ angular.module('opal.referral.controllers').controller(
         };
 
         $scope.refer = function(){
-            var demographics = _.clone($scope.patient.demographics[0]);
-            if(demographics.date_of_birth){
-                demographics.date_of_birth = moment(demographics.date_of_birth, 'DD/MM/YYYY').format('YYYY-MM-DD');
+
+            // copy demographics to the toSave object
+            var toSave = {
+              hospital_number: $scope.hospital_number,
+              demographics: FieldTranslater.jsToSubrecord($scope.patient.demographics[0], "demographics")
             }
 
-            var postData = {
-                 hospital_number: $scope.hospital_number,
-                 demographics   : demographics
-            };
+            // copy additional models to the toSave object
+            if($scope.additionalModelsData){
+              _.extend(toSave, FieldTranslater.jsToPatient($scope.additionalModelsData));
+            }
 
-            // additional model data is an object of model name -> populated model fields
-            _.forEach($scope.additionalModelsData, function(item, key){
-                  postData[key] = item.castToType(item);
-            });
-
-            $http.post('/api/v0.1/referral/' + $scope.route.slug + '/', postData).then(
+            $http.post('/api/v0.1/referral/' + $scope.route.slug + '/', toSave).then(
                function(response){
                   $scope.post_patient_text = null;
                   $scope.state = 'success';
