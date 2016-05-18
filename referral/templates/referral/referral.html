@@ -35,10 +35,12 @@
     {% block additional_models_title %}
     {% endblock %}
     <p class="lead" ng-show="state == 'success'">
-      <i class="fa fa-check"></i> [[ route.past_verb ]] [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]] to
-      <span ng-show="success_link" >
-        <a href="[[ success_link ]]">[[ route.name ]]</a>.
-      </span>
+      {% block success_title %}
+        <i class="fa fa-check"></i> [[ route.past_verb ]] [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]] to
+        <span ng-show="success_link" >
+          <a href="[[ success_link ]]">[[ route.name ]]</a>.
+        </span>
+      {% endblock success_title %}
       <span ng-hide="success_link">[[ route.name ]].</span>
     </p>
 
