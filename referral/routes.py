@@ -3,7 +3,7 @@ Establishing referral routes
 """
 from django.conf import settings
 
-from opal.utils import stringport, camelcase_to_underscore
+from opal.utils import stringport, camelcase_to_underscore, _itersubclasses
 from opal.core.schemas import serialize_model
 
 # So we only do it once
@@ -47,10 +47,7 @@ class ReferralRoute(object):
         """
         Return a specific referral route by slug
         """
-        if not IMPORTED_FROM_APPS:
-            import_from_apps()
-
-        for sub in klass.__subclasses__():
+        for sub in klass.list():
             if sub.slug() == name:
                 return sub
 
@@ -59,9 +56,10 @@ class ReferralRoute(object):
         """
         Return a list of all ward rounds
         """
+
         if not IMPORTED_FROM_APPS:
             import_from_apps()
-        return klass.__subclasses__()
+        return _itersubclasses(klass)
 
     @classmethod
     def slug(klass):
