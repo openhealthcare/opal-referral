@@ -4,17 +4,17 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <p class="lead" ng-show="state == 'editing_demographics' || state == 'initial'">
+    <p class="lead text-center" ng-show="state == 'editing_demographics' || state == 'initial'">
       <b>Who</b> are you [[ route.progressive_verb.toLowerCase() ]] to [[ route.name ]] ?
     </p>
     {% block has_demographics_title %}
-    <p class="lead" ng-show="state == 'has_demographics'">
+    <p class="lead text-center" ng-show="state == 'has_demographics'">
       We've found [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]]
     </p>
     {% endblock %}
     {% block additional_models_title %}
     {% endblock %}
-    <p class="lead" ng-show="state == 'success'">
+    <p class="lead text-center" ng-show="state == 'success'">
       {% block success_title %}
         <i class="fa fa-check"></i> [[ route.past_verb ]] [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname]] to
         <span ng-show="success_link" >
@@ -28,10 +28,10 @@
       {% endblock editing_demographics_title %}
     </div>
     <div  ng-show="state == 'merge_demographics'">
-      <p class="lead">
+      <p class="lead text-center">
         [[ patient.old_hospital_number ]] has been <b>merged</b> into [[ patient.demographics[0].hospital_number ]].
       </p>
-      <p class="lead">
+      <p class="lead text-center">
         The correct patient for this hospital number is now
         <b>[[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]] ([[ patient.demographics[0].hospital_number ]])</b>
       </p>
