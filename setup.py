@@ -8,7 +8,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='opal-referral',
-    version='0.1.1',
+    version='0.2.0',
     packages=['referral'],
     include_package_data=True,
     license='GPL3',
