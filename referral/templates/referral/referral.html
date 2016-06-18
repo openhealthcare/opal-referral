@@ -89,7 +89,7 @@
                   {% select autofocus field="Demographics.title" model="patient.demographics[0].title" %}
                   {% input field="Demographics.first_name" model="patient.demographics[0].first_name" %}
                   {% input field="Demographics.surname" model="patient.demographics[0].surname" %}
-                  {% include 'partials/_date_of_birth_field.html' with model="patient.demographics[0].date_of_birth" %}
+                  {% include 'partials/_date_of_birth_field.html' with date_of_birth_model="patient.demographics[0].date_of_birth" %}
                   {% select field="Demographics.sex" model="patient.demographics[0].sex" %}
                   {% select field="Demographics.marital_status" model="patient.demographics[0].marital_status" %}
                   {% select field="Demographics.ethnicity" model="patient.demographics[0].ethnicity" %}
