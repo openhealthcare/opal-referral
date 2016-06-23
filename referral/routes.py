@@ -59,7 +59,7 @@ class ReferralRoute(object):
 
         if not IMPORTED_FROM_APPS:
             import_from_apps()
-        return _itersubclasses(klass)
+        return list(set(_itersubclasses(klass)))
 
     @classmethod
     def slug(klass):
