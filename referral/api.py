@@ -5,14 +5,14 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
-from opal.models import Patient
-
 class ReferralViewSet(ViewSet):
 
     def list(self, request):
         return Response(self.referral.to_dict())
 
     def create(self, request):
+        from opal.models import Patient
+
         hospital_number = request.data['hospital_number']
         patient, created = Patient.objects.get_or_create(
             demographics__hospital_number=hospital_number
@@ -59,7 +59,7 @@ def viewsets():
     """
     Return our api viewsets
     """
-    from referral import ReferralRoute
+    from referral.routes import ReferralRoute
 
     apis = []
     for route in ReferralRoute.list():
