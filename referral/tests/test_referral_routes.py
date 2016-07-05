@@ -22,6 +22,7 @@ class ReferralRouteTestCase(OpalTestCase):
         expected = {
             'additional_models': [{
                 'advanced_searchable': False,
+                'angular_service': 'Colour',
                 'display_name': 'Colour',
                 'fields': [{
                             'model': 'Colour',
