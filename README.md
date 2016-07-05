@@ -109,6 +109,12 @@ to the name of the label.
     ...
     {% endblock %}
 
+## Customising the template for your referral route
+
+By default we look for a custom template named `'referral/{0}.html'.format(ReferralRoute.name)` to render the detail
+of the route. Extending 'referral/referral.html' should be straightforward and allow you to customise specific
+blocks.
+
 ## Settings
 
 ### REFERRAL_MENU_ITEM
