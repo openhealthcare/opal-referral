@@ -1,0 +1,10 @@
+[run]
+source =
+    referral
+omit =
+    referral/tests/*
+    */migrations/*
+
+[report]
+exclude_lines =
+    def __unicode__
