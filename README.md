@@ -8,14 +8,16 @@ We expect referral routes to be located in `yourapp.referrals`.
 
 In order to define a referral route, we subclass `referral.routes.ReferralRoute`.
 
-    class TestRoute(ReferralRoute):
-        name            = 'Test Route'
-        description     = 'This is a Route we use for unittests'
-        target_teams    = ['test']
-        target_category = ['testing']
-        success_link    = '/awesome/fun/times/'
+```python
+class TestRoute(ReferralRoute):
+    name            = 'Test Route'
+    description     = 'This is a Route we use for unittests'
+    target_teams    = ['test']
+    target_category = ['testing']
+    success_link    = '/awesome/fun/times/'
 
         def post_create(self, episode): pass
+```
 
 ### ReferralRoute.name
 
@@ -53,10 +55,12 @@ Use this to manipulate your newly created episode.
 For example, one might want to automatically enter stub TODO entries for a particular
 referral route.
 
-    class TestRoute(ReferralRoute):
-        def post_create(self, episode):
-            # Do whatever you like to episode
-            return
+```python
+class TestRoute(ReferralRoute):
+    def post_create(self, episode):
+        # Do whatever you like to episode
+        return
+```
 
 ### ReferralRoute.verb
 
@@ -83,17 +87,20 @@ By default we only add a patient, if you'd like to add additional models add the
 as part of additional_models. Then add template that in {{ app }}/referral/{{ route.name }}
 this template should extend referral/referral.html.
 
-    class TestRoute(ReferralRoute):
-        name            = 'Test Route'
-        additional_models = [
-            models.Diagnosis,
-            models.Treatments
-        ]
+```python
+class TestRoute(ReferralRoute):
+    name            = 'Test Route'
+    additional_models = [
+        models.Diagnosis,
+        models.Treatments
+    ]
+```
 
 The additional models will be displayed after patient details, in the order they
 appear in routes. The template should show titles/forms when scope.state is pointing
 to the name of the label.
 
+```html
     {% block additional_models %}
     <div ng-show="state=='diagnosis'"> 
         <form class="form-horizontal">
@@ -108,6 +115,7 @@ to the name of the label.
     </div>
     ...
     {% endblock %}
+```
 
 ## Customising the template for your referral route
 
