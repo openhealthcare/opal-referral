@@ -130,7 +130,7 @@ angular.module('opal.referral.controllers').controller(
 
             // additional model data is an object of model name -> populated model fields
             _.forEach($scope.additionalModelsData, function(item, key){
-                  postData[key] = item.castToType(item);
+                  postData[key] = item.makeCopy();
             });
 
             $http.post('/api/v0.1/referral/' + $scope.route.slug + '/', postData).then(
