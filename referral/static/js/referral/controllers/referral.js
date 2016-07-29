@@ -2,11 +2,12 @@
 // Referr a patient
 //
 angular.module('opal.referral.controllers').controller(
-    'ReferralCtrl', function($rootScope, $scope, $http, FieldTranslater,
+    'ReferralCtrl', function($rootScope, $scope, $http,
                              Episode, options, recordFields,
                              referral_route, Item){
 
         "use strict";
+        var DATE_FORMAT = 'DD/MM/YYYY';
         $scope.route = referral_route;
 
         // Known states are:
@@ -115,19 +116,24 @@ angular.module('opal.referral.controllers').controller(
         };
 
         $scope.refer = function(){
+            var demographics = _.clone($scope.patient.demographics[0]);
 
-            // copy demographics to the toSave object
-            var toSave = {
-              hospital_number: $scope.hospital_number,
-              demographics: FieldTranslater.jsToSubrecord($scope.patient.demographics[0], "demographics")
+            if(demographics && demographics.date_of_birth){
+                var date_of_birth = moment(demographics.date_of_birth).format(DATE_FORMAT);
+                demographics.date_of_birth = date_of_birth;
             }
 
-            // copy additional models to the toSave object
-            if($scope.additionalModelsData){
-              _.extend(toSave, FieldTranslater.jsToPatient($scope.additionalModelsData));
-            }
+            var postData = {
+                 hospital_number: $scope.hospital_number,
+                 demographics   : demographics
+            };
 
-            $http.post('/api/v0.1/referral/' + $scope.route.slug + '/', toSave).then(
+            // additional model data is an object of model name -> populated model fields
+            _.forEach($scope.additionalModelsData, function(item, key){
+                  postData[key] = item.makeCopy();
+            });
+
+            $http.post('/api/v0.1/referral/' + $scope.route.slug + '/', postData).then(
                function(response){
                   $scope.post_patient_text = null;
                   $scope.state = 'success';

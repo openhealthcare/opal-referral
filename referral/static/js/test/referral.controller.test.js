@@ -2,15 +2,23 @@ describe('ReferralCtrl', function (){
     "use strict";
 
     var $controller, $scope, $httpBackend, $rootScope;
-    var options, referral_route, controller;
+    var options, referral_route, controller, Item;
 
-    beforeEach(module('opal.referral.controllers'));
+    beforeEach(module('opal.services'));
+    beforeEach(module('opal.referral.controllers', function($provide){
+        $provide.service("Item", function(){
+          return function(someArgs){
+              this.makeCopy = function(){};
+          };
+        });
+    }));
 
     beforeEach(inject(function($injector){
         $rootScope   = $injector.get('$rootScope');
         $scope       = $rootScope.$new();
         $controller  = $injector.get('$controller');
         $httpBackend = $injector.get('$httpBackend');
+        Item = $injector.get('Item');
 
         referral_route = {
             slug: 'test'
@@ -65,10 +73,15 @@ describe('ReferralCtrl', function (){
             $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPOST('/api/v0.1/referral/test/', {
                 hospital_number: '1234',
-                demographics   : {}
+                demographics   : {},
+                Hat: {name: "bowler"}
             }).respond({success_link: '/#/something'});
 
             $scope.newPatient();
+            $scope.additionalModelsData = {Hat: new Item("Hat")}
+            spyOn($scope.additionalModelsData.Hat, "makeCopy").and.returnValue({
+              "name": "bowler"
+            });
             $scope.refer();
             $httpBackend.flush();
 

@@ -45,7 +45,7 @@ class ReferralViewSet(ViewSet):
                 new_model.update_from_dict(data_dict, request.user)
 
         if self.referral.target_category:
-            episode.category = self.referral.target_category
+            episode.category_name = self.referral.target_category
             episode.save()
         episode.set_tag_names(list(target_teams), request.user)
         referral = self.referral()

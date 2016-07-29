@@ -4,47 +4,40 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <p class="lead" ng-show="state == 'initial'">
+    <p class="lead text-center" ng-show="state == 'editing_demographics' || state == 'initial'">
       <b>Who</b> are you [[ route.progressive_verb.toLowerCase() ]] to [[ route.name ]] ?
     </p>
     {% block has_demographics_title %}
-    <p class="lead" ng-show="state == 'has_demographics'">
+    <p class="lead text-center" ng-show="state == 'has_demographics'">
       We've found [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]]
     </p>
+    {% endblock %}
+    {% block additional_models_title %}
+    {% endblock %}
+    <p class="lead text-center" ng-show="state == 'success'">
+      {% block success_title %}
+        <i class="fa fa-check"></i> [[ route.past_verb ]] [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname]] to
+        <span ng-show="success_link" >
+          <a href="[[ success_link ]]">[[ route.name ]]</a>.
+        </span>
+        <span ng-hide="success_link">[[ route.name ]].</span>
+      {% endblock success_title %}
+    </p>
+    <div  ng-show="state == 'editing_demographics'">
+      {% block editing_demographics_title %}
+      {% endblock editing_demographics_title %}
+    </div>
     <div  ng-show="state == 'merge_demographics'">
-      <p class="lead">
+      <p class="lead text-center">
         [[ patient.old_hospital_number ]] has been <b>merged</b> into [[ patient.demographics[0].hospital_number ]].
       </p>
-      <p class="lead">
+      <p class="lead text-center">
         The correct patient for this hospital number is now
         <b>[[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]] ([[ patient.demographics[0].hospital_number ]])</b>
       </p>
     </div>
-    <div  ng-show="state == 'editing_demographics'">
-      <p class="lead text-center">
-        We couldn't find any patients with this hospital number.
-      </p>
-      <p class="lead text-center">
-        <b>Please check you have entered the hospital number correctly</b>
-      </p>
-      <p class="lead text-center">
-        If this is the correct number and the patient is currently at a different hospital or in the community you can add them as an elCID only patient
-      </p>
-    </div>
-    {% endblock %}
-    {% block additional_models_title %}
-    {% endblock %}
-    <p class="lead" ng-show="state == 'success'">
-      <i class="fa fa-check"></i> [[ route.past_verb ]] [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname ]] to
-      <span ng-show="success_link" >
-        <a href="[[ success_link ]]">[[ route.name ]]</a>.
-      </span>
-      <span ng-hide="success_link">[[ route.name ]].</span>
-    </p>
-
   </div>
 </div>
-
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-default">
@@ -79,43 +72,29 @@
               details for you
             </p>
           </div>
-
         </div>
-
-
 
         <!-- Editing demographics state -->
         <div class="row" ng-show="state == 'editing_demographics'">
           <div class="row">
             <div class="col-md-12">
-              <form class="form-horizontal">
-
-	        <div class="form-group">
-	          <label class="control-label col-sm-3">Hospital</label>
-                  <label class="control-label col-sm-8 text-left">
-                    [[ hospital_number ]]
-                  </label>
-	        </div>
-
-                {% input "autofocus" label="First name" model="patient.demographics[0].first_name" %}
-                {% input label="Surname" model="patient.demographics[0].surname" %}
-	        <div class="form-group">
-	          <label class="control-label col-sm-3">Date of birth</label>
-	          <div class="col-sm-8">
-	            <input class="form-control"
-                           type="text"
-                           name="date_of_birth"
-		           ng-model="patient.demographics[0].date_of_birth"
-		           ng-model-options="{ updateOn: 'blur' }"
-		           ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/(\d{4})$/"
-		           placeholder="dd/mm/yyyy" />
-                    <span class="help-block" ng-show="newEpisodeForm.date_of_birth.$invalid">
-                      Date of Birth must be dd/mm/yyyy
-                    </span>
-	          </div>
-	        </div>
-                {% select label="Sex" model="patient.demographics[0].sex" lookuplist="gender_list" %}
-              </form>
+              {% block demographics_form %}
+                <form class="form-horizontal">
+        	        <div class="form-group">
+        	          <label class="control-label col-sm-3">Hospital</label>
+                          <label class="control-label col-sm-8 text-left">
+                            [[ hospital_number ]]
+                          </label>
+        	        </div>
+                  {% input autofocus field="Demographics.first_name" model="patient.demographics[0].first_name" %}
+                  {% input field="Demographics.surname" model="patient.demographics[0].surname" %}
+                  {% date_of_birth_field model_name="patient.demographics[0].date_of_birth" %}
+                  {% select field="Demographics.sex" model="patient.demographics[0].sex" %}
+                  {% select field="Demographics.marital_status" model="patient.demographics[0].marital_status" %}
+                  {% select field="Demographics.ethnicity" model="patient.demographics[0].ethnicity" %}
+                  {% input field="Demographics.birth_place" model="patient.demographics[0].birth_place" label="Country Of Birth"%}
+                </form>
+              {% endblock %}
             </div>
             <div class="col-md-10 col-md-offset-1">
               {% include "referral/_includes/back_button.html" %}
@@ -134,48 +113,50 @@
 
           </diV>
         </div>
+
+
+
         <span ng-show="state === 'has_demographics' || state === 'merge_demographics' || state === 'success'">
-          <div class="row">
-            <div class="col-sm-8">
-              <div class="row">
-                <div class="col-md-4">
-                  <b>Hospital #</b>
-                </div>
-                <div class="col-md-8">
-                  [[ hospital_number ]]
-                </div>
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="row">
+              <div class="col-md-4">
+                <b>Hospital #</b>
               </div>
-              <div class="row">
-                <div class="col-md-4">
-                  <b>Name</b>
-                </div>
-                <div class="col-md-8">
-                  [[ patient.demographics[0].first_name ]]
-                  [[ patient.demographics[0].surname ]]
-                </div>
+              <div class="col-md-8">
+                [[ hospital_number ]]
               </div>
-              <div class="row">
-                <div class="col-md-4">
-                  <b>Date of Birth</b>
-                </div>
-                <div class="col-md-8">
-                  [[ patient.demographics[0].date_of_birth | shortDate ]]
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4">
-                  <b>Sex</b>
-                </div>
-                <div class="col-md-8">
-                  [[ patient.demographics[0].sex ]]
-                </div>
-              </div>
-              <br />
             </div>
+            <div class="row">
+              <div class="col-md-4">
+                <b>Name</b>
+              </div>
+              <div class="col-md-8">
+                [[ patient.demographics[0].first_name ]] [[ patient.demographics[0].surname]]
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <b>Date of Birth</b>
+              </div>
+              <div class="col-md-8">
+                [[ patient.demographics[0].date_of_birth | shortDate ]]
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <b>Sex</b>
+              </div>
+              <div class="col-md-8">
+                [[ patient.demographics[0].sex ]]
+              </div>
+            </div>
+            <br />
+          </div>
           </div>
         </span>
 
-        <div class="row">
+          <div class="row content-offset-25">
           <div class="col-sm-12">
             <p>
               {% block has_demographics_buttons %}

@@ -109,9 +109,9 @@ class ReferralViewTestCase(OpalTestCase):
             'hospital_number': self.demographics.hospital_number
         }
         mock_request.user = self.user
-        self.assertEqual(0, self.patient.episode_set.filter(category='testing').count())
+        self.assertEqual(0, self.patient.episode_set.filter(category_name='testing').count())
         self.viewset().create(mock_request)
-        self.assertEqual(1, self.patient.episode_set.filter(category='testing').count())
+        self.assertEqual(1, self.patient.episode_set.filter(category_name='testing').count())
 
     def test_refer_sets_tag_names(self):
         mock_request = MagicMock(name='Mock request')
@@ -120,7 +120,7 @@ class ReferralViewTestCase(OpalTestCase):
         }
         mock_request.user = self.user
         self.viewset().create(mock_request)
-        episode = self.patient.episode_set.get(category='testing')
+        episode = self.patient.episode_set.get(category_name='testing')
         self.assertEqual(['test'], list(episode.get_tag_names(None)))
 
     def test_refer_calls_post_create(self):
@@ -131,7 +131,7 @@ class ReferralViewTestCase(OpalTestCase):
         mock_request.user = self.user
         with patch.object(TestRoute, 'post_create') as mock_create:
             response = self.viewset().create(mock_request)
-            episode = self.patient.episode_set.get(category='testing')
+            episode = self.patient.episode_set.get(category_name='testing')
             mock_create.assert_called_with(episode, mock_request.user)
 
     def test_dont_create(self):
