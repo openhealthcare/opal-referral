@@ -5,7 +5,7 @@ This allows users to refer patients to other clinical services.
 [![Build
 Status](https://travis-ci.org/openhealthcare/opal-referral.png?branch=v0.3.0)](https://travis-ci.org/openhealthcare/opal-referral)
 
-[![Coverage Status](https://coveralls.io/repos/github/openhealthcare/opal-referral/badge.svg?branch=v0.3.0)](https://coveralls.io/github/openhealthcare/opal-referral?branch=v0.3.0)
+[![Coverage Status](https://coveralls.io/repos/github/openhealthcare/opal-referral/badge.svg?branch=v0.2.0)](https://coveralls.io/github/openhealthcare/opal-referral)
 
 ## Defining a referral Route.
 
