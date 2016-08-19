@@ -3,7 +3,7 @@
 //
 angular.module('opal.referral.controllers').controller(
     'ReferralCtrl', function($rootScope, $scope, $http,
-                             Episode, options, recordFields,
+                             Episode, referencedata, recordFields,
                              referral_route, Item){
 
         "use strict";
@@ -19,7 +19,9 @@ angular.module('opal.referral.controllers').controller(
 
         var cleanAdditionalModelData = function(){
             _.each(referral_route.additional_models, function(am){
-                $scope.additionalModelsData[am.name] = new Item({}, undefined, {fields: am.fields});
+                $scope.additionalModelsData[am.name] = new Item({},
+                                                                undefined,
+                                                                {fields: am.fields});
             });
         };
 
@@ -27,12 +29,7 @@ angular.module('opal.referral.controllers').controller(
 
         $scope.additionalModels = referral_route.additional_models;
 
-        //
-        // Make our lookuplists available
-        //
-      	for (var name in options) {
-      	    $scope[name + '_list'] = options[name];
-      	}
+        _.extend($scope, referencedata.toLookuplists());
 
         $scope.lookup_hospital_number = function() {
             var patientFound = function(result){
