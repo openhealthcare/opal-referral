@@ -2,7 +2,11 @@ describe('ReferralCtrl', function (){
     "use strict";
 
     var $controller, $scope, $httpBackend, $rootScope;
-    var options, referral_route, controller, Item;
+    var referral_route, controller, Item;
+
+    var referencedata = {
+        toLookuplists: function(){return {}}
+    }
 
     beforeEach(module('opal.services'));
     beforeEach(module('opal.referral.controllers', function($provide){
@@ -23,12 +27,12 @@ describe('ReferralCtrl', function (){
         referral_route = {
             slug: 'test'
         };
-        options = options;
+        referencedata = referencedata;
 
 
         controller = $controller('ReferralCtrl', {
             $rootScope     : $rootScope,
-            options        : options,
+            referencedata  : referencedata,
             $scope         : $scope,
             referral_route  : referral_route,
             recordFields: {then: function(){}}
