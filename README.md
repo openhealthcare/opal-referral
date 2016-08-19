@@ -2,6 +2,11 @@ Referral Portal plugin for OPAL
 
 This allows users to refer patients to other clinical services.
 
+[![Build
+Status](https://travis-ci.org/openhealthcare/opal-referral.png?branch=v0.3.0)](https://travis-ci.org/openhealthcare/opal-referral)
+
+[![Coverage Status](https://coveralls.io/repos/github/openhealthcare/opal-referral/badge.svg?branch=v0.3.0)](https://coveralls.io/github/openhealthcare/opal-referral?branch=v0.3.0)
+
 ## Defining a referral Route.
 
 We expect referral routes to be located in `yourapp.referrals`.
@@ -102,7 +107,7 @@ to the name of the label.
 
 ```html
     {% block additional_models %}
-    <div ng-show="state=='diagnosis'"> 
+    <div ng-show="state=='diagnosis'">
         <form class="form-horizontal">
             {% input label="Condition" model="additionalModelsData.diagnosis.condition" lookuplist="condition_list" %}
         </form>
@@ -130,10 +135,3 @@ blocks.
 Display a menu Item?
 
 Defaut = True
-
-## Integrations
-
-[![Build
-Status](https://travis-ci.org/openhealthcare/opal-referral.png?branch=master)](https://travis-ci.org/openhealthcare/opal-referral)
-
-[![Code Health](https://landscape.io/github/openhealthcare/opal-referral/master/landscape.svg?style=flat)](https://landscape.io/github/openhealthcare/opal-referral/master)

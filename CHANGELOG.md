@@ -1,3 +1,7 @@
+### 0.3.0 Release
+
+Targets OPAL >= 0.8.x removing dependence on deprecated APIs
+
 ### 0.2.0 Release
 
 Targets OPAL >= 0.7.x
