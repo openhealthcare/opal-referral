@@ -98,17 +98,14 @@
             </div>
             <div class="col-md-10 col-md-offset-1">
               {% include "referral/_includes/back_button.html" %}
-              <button class="btn btn-lg btn-primary pull-right"
-                      ng-click="nextStep()">
-                <i class="fa fa-arrow-right"></i>
-                <span ng-if="!getNextStep()">
+              <button one-click-only ng-if="!getNextStep()" ng-click="nextStep()" class="btn btn-lg btn-primary pull-right">
+                  <i class="fa fa-arrow-right"></i>
                   [[ route.verb ]] to [[ route.name ]]
-                </span>
-                <span ng-if="getNextStep()">
-                  [[ getNextStep().display_name ]]
-                </span>
               </button>
-
+              <button ng-if="getNextStep()" ng-click="nextStep()" class="btn btn-lg btn-primary pull-right">
+                  <i class="fa fa-arrow-right"></i>
+                  [[ getNextStep().display_name ]]
+              </button>
             </div>
 
           </diV>
