@@ -1,3 +1,8 @@
+### 0.2.1 Release
+
+Changes the referral link to use the one-click-only directive so it doesn't try and save
+data back to the server multiple times.
+
 ### 0.2.0 Release
 
 Targets OPAL >= 0.7.x
