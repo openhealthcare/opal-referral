@@ -8,6 +8,7 @@ from referral import api
 from referral.urls import urlpatterns
 from referral.routes import ReferralRoute
 
+menuitems = []
 DISPLAY_MENU = getattr(settings, 'REFERRAL_MENU_ITEM', True)
 if DISPLAY_MENU:
     menuitems = [
@@ -15,8 +16,7 @@ if DISPLAY_MENU:
             href='/referrals/#/', display='Referrals', icon='fa fa-mail-forward',
             activepattern='/referrals', index=2)
     ]
-else:
-    menuitems = []
+
 
 class ReferralPortalPlugin(plugins.OpalPlugin):
     """
