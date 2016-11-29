@@ -20,6 +20,9 @@ class TestRoute(ReferralRoute):
 
 class ReferralRouteTestCase(OpalTestCase):
 
+    def test_get(self):
+        self.assertEqual(TestRoute, ReferralRoute.get('test_route'))
+
     @mock.patch.object(Colour, "get_form_url")
     def test_to_dict(self, get_form_url):
         get_form_url.return_value = "http://some_url.html"
