@@ -7,6 +7,7 @@ import time
 from django.test import RequestFactory
 from opal.core.test import OpalTestCase
 from opal.models import Patient, Episode, Team
+from opal.tests.models import Colour
 from mock import MagicMock, patch
 
 from referral import api
@@ -31,6 +32,15 @@ class TestDontCreate(ReferralRoute):
     create_new_episode = False
 
 
+class TestAdditionalRoute(ReferralRoute):
+    name = 'Additional Route'
+    description = 'To test whether we can save additional models'
+    target_teams = []
+    create_new_episode = False
+    additional_models = [
+        Colour
+    ]
+
 class ReferralViewTestCase(OpalTestCase):
     def setUp(self):
         self.test_team = Team.objects.get_or_create(name='test')
@@ -39,6 +49,8 @@ class ReferralViewTestCase(OpalTestCase):
                 self.viewset = viewset
             if viewset.referral == TestDontCreate:
                 self.dont_create_viewset = viewset
+            if viewset.referral == TestAdditionalRoute:
+                self.additional_viewset = viewset
 
         self.request = RequestFactory().post('/referral/refer')
         self.patient = Patient.objects.create()
@@ -86,7 +98,22 @@ class ReferralViewTestCase(OpalTestCase):
         self.assertEqual(0, Patient.objects.filter(demographics__hospital_number=new_number).count())
         response = self.viewset().create(mock_request)
         self.assertEqual(201, response.status_code)
-        self.assertEqual(1, Patient.objects.filter(demographics__hospital_number=new_number).count())
+        self.assertEqual(1, Patient.objects.filter(
+            demographics__hospital_number=new_number).count())
+
+    def test_refer_sets_additional_models(self):
+        mock_request = MagicMock(name='Mock request')
+        mock_request.data = {
+            'hospital_number': self.demographics.hospital_number,
+            'colour': {
+                'name': "Fuchsia"
+            }
+        }
+        mock_request.user = self.user
+        self.assertEqual(0, self.episode.colour_set.count())
+        self.additional_viewset().create(mock_request)
+        self.assertEqual(1, self.episode.colour_set.count())
+        self.assertEqual('Fuchsia', self.episode.colour_set.first().name)
 
     def test_refer_updates_demographics(self):
         mock_request = MagicMock(name='Mock request')
@@ -109,9 +136,11 @@ class ReferralViewTestCase(OpalTestCase):
             'hospital_number': self.demographics.hospital_number
         }
         mock_request.user = self.user
-        self.assertEqual(0, self.patient.episode_set.filter(category_name='testing').count())
+        self.assertEqual(0, self.patient.episode_set.filter(
+            category_name='testing').count())
         self.viewset().create(mock_request)
-        self.assertEqual(1, self.patient.episode_set.filter(category_name='testing').count())
+        self.assertEqual(1, self.patient.episode_set.filter(
+            category_name='testing').count())
 
     def test_refer_sets_tag_names(self):
         mock_request = MagicMock(name='Mock request')

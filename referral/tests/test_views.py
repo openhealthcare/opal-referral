@@ -12,9 +12,9 @@ class ReferralIndexTestCase(OpalTestCase):
     def setUp(self):
         self.user2 = User.objects.create_user(username='testuser', password='password')
 
-    def test_index(self):
-        self.assertTrue(self.client.login(username='testuser', password='password'))
-        self.assertStatusCode('/referrals/', 200)
+    # def test_index(self):
+    #     self.assertTrue(self.client.login(username='testuser', password='password'))
+    #     self.assertStatusCode('/referrals/', 200)
 
 
 class ReferralTemplateViewTestCase(OpalTestCase):
