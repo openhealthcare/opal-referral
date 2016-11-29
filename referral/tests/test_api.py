@@ -6,7 +6,7 @@ import time
 
 from django.test import RequestFactory
 from opal.core.test import OpalTestCase
-from opal.models import Patient, Episode, Team
+from opal.models import Patient, Episode
 from opal.tests.models import Colour
 from mock import MagicMock, patch
 
@@ -43,7 +43,6 @@ class TestAdditionalRoute(ReferralRoute):
 
 class ReferralViewTestCase(OpalTestCase):
     def setUp(self):
-        self.test_team = Team.objects.get_or_create(name='test')
         for name, viewset in api.viewsets():
             if viewset.referral == TestRoute:
                 self.viewset = viewset
