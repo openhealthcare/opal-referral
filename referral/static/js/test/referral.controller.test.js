@@ -5,20 +5,23 @@ describe('ReferralCtrl', function (){
     var referral_route, controller, Item;
 
     var referencedata = {
-        toLookuplists: function(){return {}}
-    }
+        toLookuplists: function(){return {};}
+    };
+
+    var columnSchema = {
+      fields: [{
+        name: 'name',
+        type: "string"
+      }]
+    };
+
 
     beforeEach(module('opal.services'));
-    beforeEach(module('opal.referral.controllers', function($provide){
-        $provide.service("Item", function(){
-          return function(someArgs){
-              this.makeCopy = function(){};
-          };
-        });
-    }));
+    beforeEach(module('opal.referral.controllers'));
 
     beforeEach(inject(function($injector){
         $rootScope   = $injector.get('$rootScope');
+        $rootScope.fields = {name: 'Hat', fields: columnSchema};
         $scope       = $rootScope.$new();
         $controller  = $injector.get('$controller');
         $httpBackend = $injector.get('$httpBackend');
@@ -82,10 +85,10 @@ describe('ReferralCtrl', function (){
             }).respond({success_link: '/#/something'});
 
             $scope.newPatient();
-            $scope.additionalModelsData = {Hat: new Item("Hat")}
-            spyOn($scope.additionalModelsData.Hat, "makeCopy").and.returnValue({
-              "name": "bowler"
-            });
+            $scope.additionalModelsData = {Hat: new Item({name: "bowler"}, null, columnSchema)};
+            // spyOn($scope.additionalModelsData.Hat, "makeCopy").and.returnValue({
+            //   "name": "bowler"
+            // });
             $scope.refer();
             $httpBackend.flush();
 
