@@ -2,7 +2,7 @@ import os
 from setuptools import setup
 
 long_desc = """
-OPAL Referral is a plugin for the OPAL web framework that provides functionality for making
+Opal Referral is a plugin for the Opal web framework that provides functionality for making
 referrals between hospital teams or to hospital departments/clinics.
 
 Source code and documentation available at https://github.com/openhealthcare/opal-referral/
@@ -13,7 +13,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='opal-referral',
-    version='0.3.0',
+    version='0.3.1',
     packages=['referral'],
     include_package_data=True,
     license='GPL3',
