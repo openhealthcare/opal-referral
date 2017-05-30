@@ -77,7 +77,6 @@ describe('ReferralCtrl', function (){
     describe('refer()', function (){
         it('Should hit the api', function () {
             $scope.hospital_number = '1234';
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPOST('/api/v0.1/referral/test/', {
                 hospital_number: '1234',
                 demographics   : {},
