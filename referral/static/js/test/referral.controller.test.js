@@ -9,9 +9,14 @@ describe('ReferralCtrl', function (){
     };
 
     var columnSchema = {
+      name: "Hat",
       fields: [{
         name: 'name',
         type: "string"
+      },
+      {
+        name: "sell_by",
+        type: "date"
       }]
     };
 
@@ -21,7 +26,7 @@ describe('ReferralCtrl', function (){
 
     beforeEach(inject(function($injector){
         $rootScope   = $injector.get('$rootScope');
-        $rootScope.fields = {name: 'Hat', fields: columnSchema};
+        $rootScope.fields = {"Hat": columnSchema};
         $scope       = $rootScope.$new();
         $controller  = $injector.get('$controller');
         $httpBackend = $injector.get('$httpBackend');
@@ -86,9 +91,6 @@ describe('ReferralCtrl', function (){
 
             $scope.newPatient();
             $scope.additionalModelsData = {Hat: new Item({name: "bowler"}, null, columnSchema)};
-            // spyOn($scope.additionalModelsData.Hat, "makeCopy").and.returnValue({
-            //   "name": "bowler"
-            // });
             $scope.refer();
             $httpBackend.flush();
 
@@ -96,6 +98,28 @@ describe('ReferralCtrl', function (){
             expect($scope.state).toBe('success');
             expect($scope.success_link).toBe('/#/something');
 
+        });
+
+        it('Should hit translate dates', function () {
+            $scope.hospital_number = '1234';
+            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
+            $httpBackend.expectPOST('/api/v0.1/referral/test/', {
+                hospital_number: '1234',
+                demographics   : {},
+                Hat: {
+                  name: "bowler",
+                  sell_by: "01/03/2017"
+                }
+            }).respond({success_link: '/#/something'});
+
+            $scope.newPatient();
+            $scope.additionalModelsData = {Hat: new Item({name: "bowler", "sell_by": new Date(2017, 2, 1)}, null, columnSchema)};
+            $scope.refer();
+            $httpBackend.flush();
+
+            expect($scope.post_patient_text).toBe(null);
+            expect($scope.state).toBe('success');
+            expect($scope.success_link).toBe('/#/something');
         });
     });
 
