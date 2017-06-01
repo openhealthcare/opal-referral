@@ -19,9 +19,9 @@ angular.module('opal.referral.controllers').controller(
 
         var cleanAdditionalModelData = function(){
             _.each(referral_route.additional_models, function(am){
-                $scope.additionalModelsData[am.name] = new Item({},
-                                                                undefined,
-                                                                {fields: am.fields});
+                $scope.additionalModelsData[am.name] = new Item(
+                  {}, undefined, am.fields
+                );
             });
         };
 
@@ -127,8 +127,9 @@ angular.module('opal.referral.controllers').controller(
 
             // additional model data is an object of model name -> populated model fields
             _.forEach($scope.additionalModelsData, function(item, key){
-                  postData[key] = item.makeCopy();
-                  delete postData[key]._client;
+                var itemPostData = item.makeCopy()
+                delete itemPostData._client;
+                postData[key] = item.castToType(itemPostData);
             });
 
             $http.post('/api/v0.1/referral/' + $scope.route.slug + '/', postData).then(
