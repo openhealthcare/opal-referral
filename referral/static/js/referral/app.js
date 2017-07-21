@@ -32,9 +32,9 @@ app.config(function($routeProvider){
         .when('/:route', {
             controller: 'ReferralCtrl',
             resolve: {
-                referral_route: function(referralLoader){ return referralLoader() },
-            	referencedata : function(Referencedata) { return Referencedata; },
-            	recordFields  : function(recordLoader) { return recordLoader; },
+              referral_route: function(referralLoader){ return referralLoader() },
+            	referencedata : function(Referencedata) { return Referencedata.load(); },
+            	recordFields  : function(recordLoader) { return recordLoader.load(); },
             },
             templateUrl: function(params){
                 return '/referral/templates/' + params.route + '.html'
