@@ -2,6 +2,12 @@ Referral Portal plugin for OPAL
 
 This allows users to refer patients to other clinical services.
 
+
+## ! Important Notice !
+
+This plugin is no longer actively maintiained - as it depends on a version of django that is no longer supported by OPAL
+
+
 [![Build
 Status](https://travis-ci.org/openhealthcare/opal-referral.png?branch=v0.3.0)](https://travis-ci.org/openhealthcare/opal-referral)
 [![Coverage Status](https://coveralls.io/repos/github/openhealthcare/opal-referral/badge.svg?branch=v0.3.0)](https://coveralls.io/github/openhealthcare/opal-referral)
